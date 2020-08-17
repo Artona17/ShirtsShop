@@ -1,0 +1,359 @@
+<html class="no-js" lang="">
+        {% block head %}
+            {% block metas %}
+                <meta charset="utf-8">
+                <meta http-equiv="x-ua-compatible" content="ie=aedge">
+                <meta name="description" content="">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+            {% endblock %}
+            <title>{% block title %}{% endblock %} - Tasnm</title>
+            <!-- favicon
+		    ============================================ -->		
+            <link rel="shortcut icon" type="image/x-icon" href="{{url_for('static', filename='img/favicon.ico')}}">
+		    <!-- google fonts -->
+		    <link href='https://fonts.googleapis.com/css?family=Poppins:400,300,500,600,700' rel='stylesheet' type='text/css'>
+            {% block styles %}
+		        <!-- all css here -->
+		        <!-- bootstrap v3.3.6 css -->
+                <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+    		    <!-- animate css -->
+                <link rel="stylesheet" href="{{url_for('static', filename='css/animate.css')}}">
+    		    <!-- pe-icon-7-stroke -->
+    		    <link rel="stylesheet" href="{{url_for('static', filename='css/pe-icon-7-stroke.min.css')}}">
+    		    <!-- jquery-ui.min css -->
+                <link rel="stylesheet" href="{{url_for('static', filename='css/jquery-ui.min.css')}}">
+                <!-- Image Zoom CSS
+    		    ============================================ -->
+                <link rel="stylesheet" href="{{url_for('static', filename='css/img-zoom/jquery.simpleLens.css')}}">
+    		    <!-- meanmenu css -->
+                <link rel="stylesheet" href="{{url_for('static', filename='css/meanmenu.min.css')}}">
+    		    <!-- nivo slider CSS
+    		    ============================================ -->
+    		    <link rel="stylesheet" href="{{url_for('static', filename='lib/css/nivo-slider.css')}}" type="text/css" />
+    		    <link rel="stylesheet" href="{{url_for('static', filename='lib/css/preview.css')}}" type="text/css" media="screen" />
+    		    <!-- owl.carousel css -->
+                <link rel="stylesheet" href="{{url_for('static', filename='css/owl.carousel.css')}}">
+    		    <!-- font-awesome css -->
+                <link rel="stylesheet" href="{{url_for('static', filename='css/font-awesome.min.css')}}">
+    		    <!-- style css -->
+    		    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    		    <!-- responsive css -->
+                <link rel="stylesheet" href="{{url_for('static', filename='css/responsive.css')}}">
+    		    <!-- modernizr css -->
+                <script src="{{url_for('static', filename='js/vendor/modernizr-2.8.3.min.js')}}"></script>
+            {% endblock %}
+        {% endblock %}
+        {% block body %}
+        <!-- header section start -->
+        {% block navbar %}
+		  <header>
+			<div class="header-top">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-6 col-sm-4">
+							<div class="left-header clearfix">
+								<ul>
+									<li><p><i class="fa fa-phone" aria-hidden="true"></i>(+880) 1910 000251</p></li>
+									<li class="hd-none"><p><i class="fa fa-clock-o" aria-hidden="true"></i>Mon-fri : 9:00-19:00</p></li>
+								</ul>
+							</div>
+						</div>
+						<div class="col-md-6 col-sm-8">
+							<div class="right-header">
+								<ul>
+									<li><a href="{{url_for('my_account')}}"><i class="fa fa-user"></i>Мой аккаунт</a></li>
+									<li><a href="{{url_for('cart')}}"><i class="fa fa-shopping-cart"></i>Корзина</a></li>
+									<li><a href="{{url_for('login')}}"><i class="fa fa-lock"></i>Войти</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="header-bottom header-bottom-one" id="sticky-menu">
+				<div class="container relative">
+					<div class="row">
+						<div class="col-sm-2 col-md-2 col-xs-4">
+							<div class="logo">
+								<a href="{{url_for('index')}}"><img src="{{url_for('static', filename='img/logo.png')}}" alt="" /></a>
+							</div>
+						</div>
+						<div class="col-sm-10 col-md-10 col-xs-8 static">
+							<div class="all-manu-area">
+							    <div class="mainmenu clearfix hidden-sm hidden-xs">
+                                    <nav>
+                                        <ul>
+                                            <li><a href="{{url_for('shop')}}">Shop</a>
+                                                <div class="magamenu ">
+                                                    <ul class="again">
+                                                        <li class="single-menu colmd4">
+                                                            <span>men’s wear</span>
+                                                            <a href="#">shirts & top</a>
+                                                            <a href="#">shoes</a>
+                                                            <a href="#">dresses</a>
+                                                        </li>
+                                                        <li class="single-menu colmd4">
+                                                            <span>women’s wear</span>
+                                                            <a href="#">shirts & tops</a>
+                                                            <a href="#">shoes</a>
+                                                            <a href="#">dresses</a>
+                                                        </li>
+                                                        <li class="single-menu colmd4">
+                                                            <span>accessories</span>
+                                                            <a href="#">sunglasses</a>
+                                                            <a href="#">leather</a>
+                                                            <a href="#">belts</a>
+                                                            <a href="#">rings</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            <li><a href="{{url_for('contact')}}">Contact</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                                <!-- mobile menu start -->
+                                <div class="mobile-menu-area hidden-lg hidden-md">
+                                    <div class="mobile-menu">
+                                        <nav id="dropdown">
+                                            <ul>
+                                                <li><a href="index.html">Home</a></li>
+                                                <li><a href="shop.html">Shop</a>
+                                                    <ul>
+                                                        <li><a href="#">all products</a>
+                                                            <ul>
+                                                                <li>
+                                                                    <span>men’s wear</span>
+                                                                    <a href="#">shirts & top</a>
+                                                                    <a href="#">shoes</a>
+                                                                    <a href="#">dresses</a>
+                                                                    <a href="#">shwmwear</a>
+                                                                    <a href="#">jeans</a>
+                                                                    <a href="#">sweaters</a>
+                                                                    <a href="#">jacket</a>
+                                                                </li>
+                                                                <li>
+                                                                    <span>women’s wear</span>
+                                                                    <a href="#">shirts & tops</a>
+                                                                    <a href="#">shoes</a>
+                                                                    <a href="#">dresses</a>
+                                                                    <a href="#">shwmwear</a>
+                                                                    <a href="#">jeans</a>
+                                                                    <a href="#">sweaters</a>
+                                                                    <a href="#">jacket</a>
+                                                                </li>
+                                                                <li>
+                                                                    <span>accessories</span>
+                                                                    <a href="#">sunglasses</a>
+                                                                    <a href="#">leather</a>
+                                                                    <a href="#">belts</a>
+                                                                    <a href="#">rings</a>
+                                                                    <a href="#">sweaters</a>
+                                                                    <a href="#">persess</a>
+                                                                    <a href="#">bags</a>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                        <li><a href="#">New products</a>
+                                                            <ul>
+                                                                <li>
+                                                                    <span>men’s wear</span>
+                                                                    <a href="#">shirts & top</a>
+                                                                    <a href="#">shoes</a>
+                                                                    <a href="#">jeans</a>
+                                                                    <a href="#">jacket</a>
+                                                                </li>
+                                                                <li>
+                                                                    <span>women’s wear</span>
+                                                                    <a href="#">shirts & tops</a>
+                                                                    <a href="#">shoes</a>
+                                                                    <a href="#">dresses</a>
+                                                                    <a href="#">shwmwear</a>
+                                                                    <a href="#">jeans</a>
+                                                                    <a href="#">sweaters</a>
+                                                                    <a href="#">jacket</a>
+                                                                </li>
+                                                                <li>
+                                                                    <span>accessories</span>
+                                                                    <a href="#">sunglasses</a>
+                                                                    <a href="#">leather</a>
+                                                                    <a href="#">belts</a>
+                                                                    <a href="#">sweaters</a>
+                                                                    <a href="#">persess</a>
+                                                                    <a href="#">bags</a>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li><a href="contact.html">Contact</a></li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                                <!-- mobile menu end -->
+                                <div class="right-header re-right-header">
+                                    <ul>
+                                        <li class="re-icon tnm"><i class="fa fa-search" aria-hidden="true"></i>
+                                            <form method="get" id="searchform" action="#">
+                                                <input type="text" value="" name="s" id="ws" placeholder="Search product..." />
+                                                <button type="submit"><i class="pe-7s-search"></i></button>
+                                            </form>
+                                        </li>
+                                        <li><a href="cart.html"><i class="fa fa-shopping-cart"></i><span class="color1">2</span></a>
+                                            <ul class="drop-cart">
+                                                <li>
+                                                    <a href="cart.html"><img src="{{url_for('static', filename='img/cart/1.png')}}" alt="" /></a>
+                                                    <div class="add-cart-text">
+                                                        <p><a href="#">White Shirt</a></p>
+                                                        <p>$50.00</p>
+                                                        <span>Color : Blue</span>
+                                                        <span>Size   : SL</span>
+                                                    </div>
+                                                    <div class="pro-close">
+                                                        <i class="pe-7s-close"></i>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <a href="cart.html"><img src="{{url_for('static', filename='img/cart/2.png')}}" alt="" /></a>
+                                                    <div class="add-cart-text">
+                                                        <p><a href="#">White Shirt</a></p>
+                                                        <p>$50.00 x 2</p>
+                                                        <span>Color : Blue</span>
+                                                        <span>Size   : SL</span>
+                                                    </div>
+                                                    <div class="pro-close">
+                                                        <i class="pe-7s-close"></i>
+                                                    </div>
+                                                </li>
+                                                <li class="total-amount clearfix">
+                                                    <span class="floatleft">total</span>
+                                                    <span class="floatright"><strong>= $150.00</strong></span>
+                                                </li>
+                                                <li>
+                                                    <div class="goto text-center">
+                                                        <a href="cart.html"><strong>go to cart &nbsp;<i class="pe-7s-angle-right"></i></strong></a>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		  </header>
+        {% endblock %}
+        <!-- header section end -->
+        {% block content %}
+            <!-- footer section start -->
+            <footer class="re-footer-section">
+                <!-- footer-top area start -->
+                <div class="footer-top section-padding-top">
+                <div class="footer-dsc">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4 col-md-3">
+                                <div class="single-text res-text">
+                                    <div class="footer-title">
+                                        <h4>Contact us</h4>
+                                        <hr class="dubble-border"/>
+                                    </div>
+                                    <div class="footer-text">
+                                        <ul>
+                                            <li>
+                                                <i class="pe-7s-map-marker"></i>
+                                                <p>My Company, 45 Puffin Street 1245</p>
+                                                <p class="rs">Poffinville France.</p>
+                                            </li>
+                                            <li>
+                                                <i class="pe-7s-call"></i>
+                                                <p>+201 (987) 6641 053</p>
+                                                <p>+202 (987) 6641 056</p>
+                                            </li>
+                                            <li>
+                                                <i class="pe-7s-mail-open"></i>
+                                                <p>info@domainname.com</p>
+                                                <p>company@outlook.com</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="dubble-border"/>
+                </div>
+                <div class="social-media">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="paypal social-icon">
+                                    <ul>
+                                        <li><a href="#"><i class="fa fa-cc-visa"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-cc-mastercard"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-cc-paypal"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="social-icon">
+                                    <ul class="floatright">
+                                        <li class="res-mar"><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <!-- footer-top area end -->
+                <!-- footer-bottom area start -->
+                <div class="footer-bottom">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12 text-center">
+                            <p>&copy; 2020 ____. All Rights Reserved.</p>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <!-- footer-bottom area end -->
+            </footer>
+            <!-- footer section end -->
+            {% endblock %}            
+        {% endblock %}
+    {% block scripts %}   
+        <!-- all js here -->
+        <!-- jquery latest version -->
+        <script src="{{url_for('static', filename='js/vendor/jquery-1.12.0.min.js')}}"></script>
+        <!-- bootstrap js -->
+        <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+        <!-- parallax js -->
+        <script src="{{url_for('static', filename='js/parallax.min.js')}}"></script>
+        <!-- owl.carousel js -->
+        <script src="{{url_for('static', filename='js/owl.carousel.min.js')}}"></script>
+        <!-- Img Zoom js -->
+        <script src="{{url_for('static', filename='js/img-zoom/jquery.simpleLens.min.js')}}"></script>
+        <!-- meanmenu js -->
+        <script src="{{url_for('static', filename='js/jquery.meanmenu.js')}}"></script>
+        <!-- jquery.countdown js -->
+        <script src="{{url_for('static', filename='js/jquery.countdown.min.js')}}"></script>
+        <!-- Nivo slider js
+        ============================================ -->        
+        <script src="{{url_for('static', filename='lib/js/jquery.nivo.slider.js')}}" type="text/javascript"></script>
+        <script src="{{url_for('static', filename='lib/home.js')}}" type="text/javascript"></script>
+        <!-- jquery-ui js -->
+        <script src="{{url_for('static', filename='js/jquery-ui.min.js')}}"></script>
+        <!-- sticky js -->
+        <script src="{{url_for('static', filename='js/sticky.js')}}"></script>
+        <!-- plugins js -->
+        <script src="{{url_for('static', filename='js/plugins.js')}}"></script>
+        <!-- main js -->
+        <script src="{{url_for('static', filename='js/main.js')}}"></script>
+    {% endblock %}
+</html>
