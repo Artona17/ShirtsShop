@@ -545,7 +545,7 @@ ul.drop-setting li,.mainmenu ul li ul li {
   background: #fff none repeat scroll 0 0;
   padding: 20px;
   top: 100%;
-  width: 770px;
+  width: 400px;
 }
 .magamenu ul li {position: unset;}
 .magamenu ul li.drop-icon:hover::after,.magamenu ul li ul li{
@@ -566,7 +566,7 @@ ul.drop-setting li,.mainmenu ul li ul li {
 .magamenu ul li ul li{
 	transition: all 0.3s ease .2s;
 }
-.magamenu ul li:first-child ul {z-index: 1;}
+
 .mainmenu .magamenu > ul > li > a {
     border-bottom: 0 none;
     line-height: 1;
@@ -2892,11 +2892,11 @@ p.checkout-coupon input[type="submit"]:hover,  .cop-left input[type="submit"]:ho
 }
 .ro-checkout-summary .ro-body {
     overflow: hidden;
-    padding: 0 35px;
+    padding: 20 35px;
 }
 .ro-checkout-summary .ro-body .ro-item {
     font-size: 14px;
-    padding: 40px 0 0;
+    padding: 0 0 90;
 }
 .ro-checkout-summary .ro-body .ro-item .ro-image {
     float: left;
@@ -3297,7 +3297,7 @@ p.checkout-coupon.full input[type="submit"] {
   display: inline-block;
   font-weight: normal;
   outline: medium none;
-  padding: 7px 27px 3px;
+  padding: 7px 20px 3px;
   text-align: center;
   text-transform: uppercase;
   transition: all 0.4s ease 0s;
@@ -3315,6 +3315,7 @@ p.checkout-coupon.full input[type="submit"] {
 }
 .wc-proceed-to-checkout {
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 .second-all-class {
   display: block;
@@ -3336,7 +3337,7 @@ p.checkout-coupon.full input[type="submit"] {
   min-width: 100px;
   padding: 6px 10px;
   text-align: center;
-  text-transform: capitalize;
+  text-transform: initial;
   vertical-align: middle;
   white-space: nowrap;
 }

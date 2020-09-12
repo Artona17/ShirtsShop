@@ -5,6 +5,7 @@
                 <meta http-equiv="x-ua-compatible" content="ie=aedge">
                 <meta name="description" content="">
                 <meta name="viewport" content="width=device-width, initial-scale=1">
+                <meta http-equiv="Pragma" content="no-cache"> <!--НЕ ЗАБЫТЬ УБРАТЬ!!!-->
             {% endblock %}
             <title>{% block title %}{% endblock %} - Tasnm</title>
             <!-- favicon
@@ -61,9 +62,7 @@
 						<div class="col-md-6 col-sm-8">
 							<div class="right-header">
 								<ul>
-									<li><a href="{{url_for('my_account')}}"><i class="fa fa-user"></i>Мой аккаунт</a></li>
-									<li><a href="{{url_for('cart')}}"><i class="fa fa-shopping-cart"></i>Корзина</a></li>
-									<li><a href="{{url_for('login')}}"><i class="fa fa-lock"></i>Войти</a></li>
+									<li><a href="{{url_for('main.cart')}}"><i class="fa fa-shopping-cart"></i>Корзина</a></li>
 								</ul>
 							</div>
 						</div>
@@ -73,18 +72,19 @@
 			<div class="header-bottom header-bottom-one" id="sticky-menu">
 				<div class="container relative">
 					<div class="row">
-						<div class="col-sm-2 col-md-2 col-xs-4">
+						<!--<div class="col-sm-2 col-md-2 col-xs-4">
 							<div class="logo">
-								<a href="{{url_for('index')}}"><img src="{{url_for('static', filename='img/logo.png')}}" alt="" /></a>
+								<a href="{{url_for('main.index')}}"><img src="{{url_for('static', filename='img/logo.png')}}" alt="" /></a>
 							</div>
-						</div>
-						<div class="col-sm-10 col-md-10 col-xs-8 static">
+						</div>-->
+						<div class="col-sm-12 col-md-12 col-xs-8 static"> <!--10 и 10 при логотипе-->
 							<div class="all-manu-area">
 							    <div class="mainmenu clearfix hidden-sm hidden-xs">
                                     <nav>
                                         <ul>
-                                            <li><a href="{{url_for('shop')}}">Shop</a>
-                                                <div class="magamenu ">
+                                            <li><a href="{{url_for('main.index')}}">Главная</a></li>
+                                            <li><a href="{{url_for('main.shop')}}">Магазин</a>
+                                                <div class="magamenu">
                                                     <ul class="again">
                                                         <li class="single-menu colmd4">
                                                             <span>men’s wear</span>
@@ -108,7 +108,7 @@
                                                     </ul>
                                                 </div>
                                             </li>
-                                            <li><a href="{{url_for('contact')}}">Contact</a></li>
+                                            <li><a href="{{url_for('main.contact')}}">Связаться</a></li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -200,42 +200,7 @@
                                                 <button type="submit"><i class="pe-7s-search"></i></button>
                                             </form>
                                         </li>
-                                        <li><a href="cart.html"><i class="fa fa-shopping-cart"></i><span class="color1">2</span></a>
-                                            <ul class="drop-cart">
-                                                <li>
-                                                    <a href="cart.html"><img src="{{url_for('static', filename='img/cart/1.png')}}" alt="" /></a>
-                                                    <div class="add-cart-text">
-                                                        <p><a href="#">White Shirt</a></p>
-                                                        <p>$50.00</p>
-                                                        <span>Color : Blue</span>
-                                                        <span>Size   : SL</span>
-                                                    </div>
-                                                    <div class="pro-close">
-                                                        <i class="pe-7s-close"></i>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <a href="cart.html"><img src="{{url_for('static', filename='img/cart/2.png')}}" alt="" /></a>
-                                                    <div class="add-cart-text">
-                                                        <p><a href="#">White Shirt</a></p>
-                                                        <p>$50.00 x 2</p>
-                                                        <span>Color : Blue</span>
-                                                        <span>Size   : SL</span>
-                                                    </div>
-                                                    <div class="pro-close">
-                                                        <i class="pe-7s-close"></i>
-                                                    </div>
-                                                </li>
-                                                <li class="total-amount clearfix">
-                                                    <span class="floatleft">total</span>
-                                                    <span class="floatright"><strong>= $150.00</strong></span>
-                                                </li>
-                                                <li>
-                                                    <div class="goto text-center">
-                                                        <a href="cart.html"><strong>go to cart &nbsp;<i class="pe-7s-angle-right"></i></strong></a>
-                                                    </div>
-                                                </li>
-                                            </ul>
+                                        <li><a href="{{url_for('main.cart')}}"><i class="fa fa-shopping-cart"></i></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -247,7 +212,139 @@
 		  </header>
         {% endblock %}
         <!-- header section end -->
+        <div class="container">
+                {% for message in get_flashed_messages() %}
+                <div class="alert alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+                </div>
+                {% endfor %}
+        </div>
         {% block content %}
+            {% block page_content %}                
+                <div class="quick-view modal fade in" id="quick-view">
+                <div class="container">
+                    <div class="row">
+                    <div id="view-gallery" class="owl-carousel product-slider owl-theme">
+                        {% for item in products.items %}
+                        <div class="col-xs-12">
+                            <div class="d-table">
+                                <div class="d-tablecell">
+                                    <div class="modal-dialog">
+                                        <div class="main-view modal-content">
+                                            <div class="modal-footer" data-dismiss="modal">
+                                                <span>x</span>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-5">
+                                                    <div class="quick-image">
+                                                        <div class="single-quick-image tab-content text-center">
+                                                            <div class="tab-pane  fade in active" id="sin-pro-1">
+                                                                <img src="{{url_for('static', filename='img/quick-view/10.jpg')}}" alt="" />
+                                                            </div>
+                                                            {% for i in range(2, 5) %}
+                                                            <div class="tab-pane fade in" id="sin-pro-{{i}}">
+                                                                <img src="{{url_for('static', filename='img/quick-view/10.jpg')}}" alt="" />
+                                                            </div>
+                                                            {% endfor %}
+                                                        </div>
+                                                        <div class="quick-thumb">
+                                                            <div class="nav nav-tabs">
+                                                                <ul>
+                                                                    {% for i in range(1, 5) %}
+                                                                    <li><a data-toggle="tab" href="#sin-pro-{{i}}"> <img src="{{url_for('static', filename='img/quick-view/10.jpg')}}" alt="quick view" /> </a></li>
+                                                                    {% endfor %}
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>                          
+                                                </div>
+                                                <div class="col-xs-12 col-sm-7">
+                                                    <div class="quick-right">
+                                                        <div class="quick-right-text">
+                                                            <h3><strong><a href="{{url_for('main.product', id = item.id)}}">{{item.name}}</a></strong></h3>
+                                                            <div class="rating">
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star"></i>
+                                                                <i class="fa fa-star-half-o"></i>
+                                                                <i class="fa fa-star-o"></i>
+                                                            </div>
+                                                            <div class="amount">
+                                                                <h4>{{item.price|round|int}}₽</h4>
+                                                            </div>
+                                                            <p>{{item.description}}</p>
+                                                            <div class="row m-p-b">
+                                                                <div class="col-sm-12 col-md-6">
+                                                                    <div class="por-dse responsive-strok clearfix">
+                                                                        <ul>
+                                                                            <li><span>На складе</span><strong>:</strong> In stock</li>
+                                                                            <li><span>В категориях</span><strong>:</strong> <a href="#">Men</a> <a href="#">Fashion</a> <a href="#">Shirt</a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-12 col-md-6">
+                                                                    <div class="por-dse color">
+                                                                        <ul>
+                                                                            <li><span>color</span><strong>:</strong> <a href="#">Red</a> <a href="#">Green</a> <a href="#">Blue</a> <a href="#">Orange</a></li>
+                                                                            <li><span>size</span><strong>:</strong>  <a href="#">SL</a> <a href="#">SX</a> <a href="#">M</a> <a href="#">XL</a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="dse-btn">
+                                                                <div class="row">
+                                                                    <div class="col-sm-12 col-md-6">
+                                                                        <div class="por-dse clearfix">
+                                                                            <ul>
+                                                                                <li class="share-btn qty clearfix"><span>Количество</span>
+                                                                                    <form action="#" method="POST">
+                                                                                        <div class="plus-minus">
+                                                                                            <a class="dec qtybutton">-</a>
+                                                                                            <input type="text" value="1" name="qtybutton" class="plus-minus-box">
+                                                                                            <a class="inc qtybutton">+</a>
+                                                                                        </div>
+                                                                                    </form>
+                                                                                </li>
+                                                                                <li class="share-btn clearfix"><span>Поделиться</span>
+                                                                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                                                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                                                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-12 col-md-6">
+                                                                        <div class="por-dse clearfix responsive-othre">
+                                                                            <ul class="other-btn">
+                                                                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <form action="/add_to_cart" method="post">
+                                                                            <input type="hidden" name="add_to_cart">
+                                                                            <input type="hidden" name="product_id" value="{{ item.id }}">
+                                                                            <input type="hidden" name="quantity" value="1">
+                                                                            <button name = "atcart" class="fa fa-shopping-cart"></button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- single-product item end -->
+                        {% endfor %}
+                    </div>
+                </div>
+                </div>
+                </div>               
+            {% endblock %}
             <!-- footer section start -->
             <footer class="re-footer-section">
                 <!-- footer-top area start -->
