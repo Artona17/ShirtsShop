@@ -44,7 +44,7 @@ img {max-width:100%;}
 p {margin:0px;}
 h1, h2, h3, h4, h5, h6 {
   margin: 0 0 10px;
-  font-family: 'Poppins', sans-serif;
+  font-family: system-ui;
   text-transform:uppercase;
   font-weight:600;
 }
@@ -120,7 +120,7 @@ hr.line {
 #scrollUp:hover{background-color: #ef6644;}
 .clear{clear:both}
 body {
-	font-family: 'Poppins', sans-serif;
+	font-family: system-ui;
 	color:#666666;
 	font-size:13px;
 	font-weight:400;
@@ -219,7 +219,7 @@ header li i {
   font-weight: 400;
 }
 .right-header span {
-	font-family: Poppins;
+	font-family: system-ui;
 	font-size: 12px;
 	font-weight: 300;
 	position: absolute;

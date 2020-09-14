@@ -8,7 +8,7 @@ import re
 
 @main.route('/')
 def index():
-    #db.create_all()
+    # db.create_all()
     products = Product.query.all()
     return render_template('index.html', products=products)
 
@@ -24,48 +24,84 @@ def product(id):
     reviewForm = ReviewForm()
     product_info = Product.query.filter(Product.id == id).first_or_404()
     product_info.price = int(product_info.price)
-    product_info.sizes = dict(product_info.sizes)
+    # product_info.sizes = dict(product_info.sizes)
     return render_template('single-product.html', form=reviewForm, product=product_info)
 
 
-@main.route('/shop')
-@main.route('/shop/<int:page>')
-def shop(page=1, items_per_page=1):
-    form1 = HowManyProducts()
-    form2 = SortingForm()
+@main.route('/shop', methods=['GET', 'POST'])
+@main.route('/shop/<int:page>', methods=['GET', 'POST'])
+def shop(page=1, items_per_page=3):
+    howManyProducts_form = HowManyProducts()
+    sorting_form = SortingForm()
+
+    types = Type.query.all()
     categories = Category.query.all()
-    products = Product.query.paginate(page, items_per_page, False)
-    #if request.method == 'POST' and form1.validate():
-     #   how_many = form1.data
-    #    products = Product.query.paginate(page, how_many, False)
-    types = Type.query.all()
-    return render_template('shop.html', types=types, categories=categories, products=products, form1=form1, form2=form2)
+
+    if request.method == 'POST':
+        categories_info = categories
+        types_info = types
+
+        checked_categories = request.form.getlist('category')
+        if checked_categories:
+            categories_info = Category.query.filter(Category.name.in_(checked_categories)).all()
+
+        checked_types = request.form.getlist('type')
+        if checked_types:
+            types_info = Type.query.filter(Type.name.in_(checked_types)).all()
+
+        print(types_info)
+        print(categories_info)
+
+        products_by_types_ids = list()
+        products_by_categories_ids = list()
+
+        for type_info in types_info:
+            for item in type_info.products:
+                products_by_types_ids.append(item.id)
+
+        for category_info in categories_info:
+            for item in category_info.products:
+                products_by_categories_ids.append(item.id)
+
+        products_ids = list(set(products_by_types_ids) & set(products_by_categories_ids))
+
+        if len(products_ids) < items_per_page:
+            page = 0
+
+        print(products_ids)
+        products = Product.query.filter(Product.id.in_(products_ids)).paginate(page, items_per_page, False)
+        print(products)
+    else:
+        products = Product.query.paginate(page, items_per_page, False)
+
+    return render_template('shop.html', types=types, categories=categories, products=products,
+                           form1=howManyProducts_form, form2=sorting_form)
 
 
-@main.route('/shop', methods=['POST'])
-@main.route('/shop/<int:page>', methods=['POST'])
-def shop_forms(page=1, items_per_page=1):
-    category = request.form['category']
-    type = request.form['type']
-    print(category)
-    print(type)
-    categories = Category.query.filter(Category.name == category).first()
-    products = Product.query.paginate(page, items_per_page, False)
-    #if request.method == 'POST' and form1.validate():
-     #   how_many = form1.data
-    #    products = Product.query.paginate(page, how_many, False)
-    types = Type.query.all()
-    return render_template('shop.html', types=types, categories=categories, products=products)
+# @main.route('/shop', methods=['POST'])
+# @main.route('/shop/<int:page>', methods=['POST'])
+# def shop_forms(page=1, items_per_page=1):
+#    category = request.form['category']
+#    type = request.form['type']
+#    print(category)
+#    print(type)
+#    categories = Category.query.filter(Category.name == category).first()
+#    products = Product.query.paginate(page, items_per_page, False)
+#    #if request.method == 'POST' and form1.validate():
+#     #   how_many = form1.data
+#    #    products = Product.query.paginate(page, how_many, False)
+#    types = Type.query.all()
+#    return render_template('shop.html', types=types, categories=categories, products=products)
 
 
 @main.route('/cart')
 def cart():
-    #product = Product.query.filter(Product.id == product_id).first()
+    # product = Product.query.filter(Product.id == product_id).first()
     if 'cart' not in session:
         session['cart'] = []
         return render_template('shopping-cart.html', cart=session['cart'])
     else:
-        #print(session)
+        # print(session)
         subtotal = 0
         product_names_prices = {}
         for item in session['cart']:
@@ -75,7 +111,8 @@ def cart():
             product_names_prices.update({product.id: [product.name, int(product.price), qty[0]]})
             subtotal += int(product.price) * qty[0]
         print(session)
-        return render_template('shopping-cart.html', products=product_names_prices, cart=session['cart'], subtotal=subtotal)
+        return render_template('shopping-cart.html', products=product_names_prices, cart=session['cart'],
+                               subtotal=subtotal)
 
 
 @main.route("/add_to_cart", methods=['POST'])
@@ -91,12 +128,12 @@ def add_to_cart():
         id = int(list(item.keys())[0])
         qty_was = list(item.values())[0]
         if id == product_id:
-            item.update({str(id): qty_was+qty})
+            item.update({str(id): qty_was + qty})
             break
     else:
         cart_list.append({product_id: qty})
     session['cart'] = cart_list
-    #flash('Товар {0} успешно добавлен в корзину!', product.name)
+    # flash('Товар {0} успешно добавлен в корзину!', product.name)
     return redirect(url_for("main.shop"))
 
 
@@ -110,7 +147,7 @@ def remove_from_cart():
         print(id)
         if id == product_id:
             cart_list.remove(item)
-    #cart_list.remove(product_id)
+    # cart_list.remove(product_id)
     session['cart'] = cart_list
     print(session)
     return redirect(url_for('main.cart'))
@@ -150,9 +187,11 @@ def checkout():
         product = Product.query.filter(Product.id == int(id[0])).first()
         print(session)
         qty = list(item.values())
-        product_names_prices.update({product.id: [product.name, int(product.price), qty[0], int(product.price*qty[0])]})
-        subtotal += int(product.price)*qty[0]
+        product_names_prices.update(
+            {product.id: [product.name, int(product.price), qty[0], int(product.price * qty[0])]})
+        subtotal += int(product.price) * qty[0]
     if request.method == 'POST' and Deliveryform.validate_on_submit():
         print('I LOVE MYSELF AND THIS CODE')
         return render_template('checkout.html')
-    return render_template('checkout.html', form1=formShip, form2=Deliveryform, cart=session['cart'], products=product_names_prices, subtotal=subtotal)
+    return render_template('checkout.html', form1=formShip, form2=Deliveryform, cart=session['cart'],
+                           products=product_names_prices, subtotal=subtotal)

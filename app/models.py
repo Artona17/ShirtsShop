@@ -19,7 +19,7 @@ class Product(db.Model):
     male = db.Column(db.Boolean, nullable=True)
     image = db.Column(db.String(32), nullable=True)
     score = db.Column(db.SmallInteger, nullable=True)
-    product_id = db.Column(db.Integer, db.ForeignKey('types.id'))
+    product_id = db.Column(db.Integer, db.ForeignKey('types.id')) #TODO: поменять в базе данных наименование product_id на type_id
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
     sizes = db.Column(db.String(64), nullable=True)
     colors = db.Column(db.String(256), nullable=True)

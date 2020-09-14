@@ -33,7 +33,7 @@
                                     <h3 class="wg-title2">Категории</h3>
                                     <ul class="product-categories">
                                         {% for category in categories %}
-                                            <input type="checkbox" name = "category"> {{category.name}}
+                                            <input type="checkbox" name = "category" value='{{category.name}}'> {{category.name}}
                                             <span class="count">{{category.products|length}}</span><br>
                                         {% endfor %}
                                     </ul>
@@ -42,11 +42,24 @@
                                     <h3 class="wg-title2">Types</h3>
                                     <ul class="product-categories">
                                         {% for type in types %}
-                                            <input type="checkbox" name = "type"> {{type.name}}
+                                            <input type="checkbox" name = "type" value='{{type.name}}'> {{type.name}}
                                             <span class="count">{{type.products|length}}</span><br>
                                         {% endfor %}                                 
                                     </ul>
                                 </div>
+                                 <div class="shop-one re-shop-one">
+                                <h3 class="wg-title2">Выберите цвет</h3>
+                                <ul class="product-categories">
+                                    <li class="cat-item cat-item-11">
+                                        <a href="#">Black</a>
+                                        <span class="count">(1)</span>
+                                    </li>
+                                    <li class="cat-item cat-item-8">
+                                        <a href="#">Orange</a>
+                                        <span class="count">(1)</span>
+                                    </li>
+                                </ul>
+                            </div>
                                 <div class="shop-one re-shop-one">
                                     <h3 class="wg-title2">Выбрать по цене</h3>
                                     <div class="widget shop-filter">
@@ -63,19 +76,6 @@
                                     </div>
                                 </div>
                             </form>
-                            <div class="shop-one re-shop-one">
-                                <h3 class="wg-title2">Выберите цвет</h3>
-                                <ul class="product-categories">
-                                    <li class="cat-item cat-item-11">
-                                        <a href="#">Black</a>
-                                        <span class="count">(1)</span>
-                                    </li>
-                                    <li class="cat-item cat-item-8">
-                                        <a href="#">Orange</a>
-                                        <span class="count">(1)</span>
-                                    </li>
-                                </ul>
-                            </div>
                         </div>
                     </div>
                     <div class="col-md-8 col-lg-9 col-sm-12">

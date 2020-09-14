@@ -19,7 +19,7 @@ class PasswordChangeForm(FlaskForm):
 class ContactForm(FlaskForm):
     name = StringField('Ваше имя', validators=[Length(8, 64), DataRequired()])
     email = StringField('E-Mail', validators=[Length(1, 64), Email(), DataRequired()])
-    enquiry = TextAreaField('Проблема', validators=[DataRequired()])
+    enquiry = TextAreaField('Проблема', validators=[DataRequired()], render_kw={'style': 'resize: vertical; min-height: 150px'})
     submit = SubmitField('Отправить')
 
 
