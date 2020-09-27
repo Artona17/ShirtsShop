@@ -1,19 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, PasswordField, SubmitField, SelectField, RadioField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, Regexp
-
-
-class EditProfileForm(FlaskForm):
-    FirstName = StringField('First Name', validators=[Length(1, 64)])
-    LastName = StringField('Last Name', validators=[Length(1, 64)])
-    email = StringField('E-Mail', validators=[Length(8, 64), Email()])
-    phone = StringField('Telephone')
-    submit = SubmitField('Submit')
-
-
-class PasswordChangeForm(FlaskForm):
-    password = PasswordField('Password', validators=[Length(8, 64)])
-    passwordConfirm = PasswordField('Confirm Password', validators=[Length(8, 64)])
+from wtforms import StringField, TextAreaField, SubmitField, SelectField, RadioField
+from wtforms.validators import DataRequired, Length, Email
 
 
 class ContactForm(FlaskForm):
@@ -52,6 +39,6 @@ class ReviewForm(FlaskForm):
 
 
 class DeliveryandPaymentForm(FlaskForm):
-    deliverychoice = RadioField('Способ доставки:', choices=['Самовывоз\n', 'Курьером\n', 'Почтой\n'], validators=[DataRequired()])
+    deliverychoice = RadioField('Способ доставки:', choices=[('first_option', 'Самовывоз'), ('second_option', 'Курьером'), ('third_option', 'Почтой')], validators=[DataRequired()])
     paymentchoice = RadioField('Способ оплаты:', choices=['Оплата картой на сайте', 'Оплата при получении'], validators=[DataRequired()])
     submit = SubmitField('Продолжить')

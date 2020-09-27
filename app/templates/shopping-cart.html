@@ -48,8 +48,8 @@
                                     {% for item in products %}
                                     <tr>
                                         <td class="sop-cart an-shop-cart">
-                                            <a href="{{url_for('main.product', id = item)}}"><img class="primary-image" alt="" src="{{url_for('static', filename='img/products/10.jpg')}}"></a>
-                                            <!--ссылка на генеренную страницу--><a href="{{url_for('main.product', id = item)}}">{{products.get(item)[0]}}</a> 
+                                            <a style="margin: -30" class="col-md-12 col-sm-12 col-xs-12" href="{{url_for('main.product', id = item)}}"><img class="primary-image" alt="" src="{{url_for('static', filename='img/products/10.jpg')}}"></a>
+                                            <!--ссылка на генеренную страницу--><a class="col-md-12 col-sm-12 col-xs-12" href="{{url_for('main.product', id = item)}}">{{products.get(item)[0]}}</a>
                                         </td>
                                         <td class="sop-cart an-sh">
                                             <form action="/how_much" method="post">
@@ -72,7 +72,7 @@
                                             <form action="/remove_from_cart" method="post">
                                                 <input type="hidden" name="remove_from_cart">
                                                 <input type="hidden" name="product_id" value="{{ item }}">
-                                                <button name ="remove"><span>x</span></a>
+                                                <button name ="remove"><span>x</span></button>
                                             </form>
                                         </td>
                                     </tr>
@@ -84,7 +84,7 @@
                 </div>
                 <div class="row">
                     <div class="second-all-class">
-                        <div class="col-md-12 col-sm-5 col-xs-5">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="sub-total">
                                 <table>
                                     <tbody>
@@ -100,8 +100,8 @@
                                 </table>
                             </div>
                             <div class="wc-proceed-to-checkout">
-                                <a class="button wc-backward" href="{{url_for('main.shop')}}">Продолжить покупки</a>
-                                <a class="wc-forward" href="{{url_for('main.checkout')}}">Оформить заказ</a>
+                                <a style="margin: 20 0" class="col-md-7 col-sm-12 col-xs-12 button wc-backward" href="{{url_for('main.shop')}}">Продолжить покупки</a>
+                                <a style="margin: 20 0" class="col-md-4 col-sm-12 col-xs-12 wc-forward" href="{{url_for('main.checkout')}}">Оформить заказ</a>
                             </div>
                         </div>
                     </div>

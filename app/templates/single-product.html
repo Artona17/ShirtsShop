@@ -102,10 +102,23 @@
                                     </p>
                                     <!--<div class="short-description">-->
                                         <p>Доступные размеры: 
-                                            {{product.sizes}}
+                                            {% for i in sizes.keys() %}
+                                                {% if sizes[i] == 0 %}
+                                                    <s>{{i}}</s>
+                                                {% else %}
+                                                    {{i}}
+                                                {% endif %}
+                                            {% endfor %}
                                         </p>
                                         <p>Доступные цвета:
-                                            
+                                            {% for i in colors.keys() %}
+                                                {% if colors[i] == 0 %}
+                                                    <s>{{i}}</s>
+                                                {% else %}
+                                                    {{i}}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </p>
                                     <!--</div>-->
                                     <div class="pre-box">
                                         <span class="special-price">{{product.price}}₽</span>
@@ -113,7 +126,7 @@
                                     <div class="add-to-box1">
                                         <div class="add-to-box add-to-box2">
                                             <div class="add-to-cart">
-                                                <form action="/add_to_cart" method="post">
+                                                 <form action="/add_to_cart" method="post">
                                                     <div class="input-content">
                                                         <label>Quantity:</label>
                                                         <div class="quantity">

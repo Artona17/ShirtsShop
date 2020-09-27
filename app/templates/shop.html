@@ -11,7 +11,7 @@
                 <div class="row">
                     <div class="col-md-12 text-center">
                         <div class="con-text">
-                            <h2 class="page-title">Магазин</h2>
+                            <h2 class="page-title">Я тебя люблю!!!</h2>
                             <p><a href="{{url_for('main.index')}}">Главная</a> | Магазин</p>
                         </div>
                     </div>
@@ -217,24 +217,21 @@
 
 {% block scripts %}
     {{super()}}
-    <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script type=text/javascript>
-        $(function() {
-          $('#addcart').bind('click', function() {
-            $.getJSON('/add_to_cart',
-                function(data) {
-              //do nothing
-            });
-            return false;
-          });
-        });
-    </script>-->
-    $( document ).ready(function() {
-    $("#btn").click(
-        function(){
-            sendAjaxForm('result_form', 'ajax_form', 'action_ajax_form.php');
-            return false; 
+<script type=text/javascript>
+    const proxyurl = "https://cors-anywhere.herokuapp.com/"
+    body = $("#howMany").click().val();
+    function SendForm(method, url){
+        const headers = {
+            'Content-Type': 'application/json'
         }
-    );
-});
+        return fetch(proxyurl+url, {
+            method: method,
+            body: JSON.stringify(body),
+            headers: headers
+        }).then(response => {return response.text()})
+    }
+
+    SendForm('POST', 'http://localhost:5000/shop', body)
+    .then(data => console.log(data))
+</script>
 {% endblock %}

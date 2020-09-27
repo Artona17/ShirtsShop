@@ -37,21 +37,31 @@
                                                     <h3 class="checkbox9">ИНФОРМАЦИЯ О СПОСОБАХ ДОСТАВКИ И ОПЛАТЫ</h3>
                                                 </div>
                                             </div>
-                                            <form class="all-payment" id = "payment" method="post">
-                                                {{ form2.deliverychoice.label }}
+                                            <form class="all-payment" id ="payment" method="post">
+
+                                                {{ form2.csrf_token() }}
+                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                {{ form2.deliverychoice.label() }}
+                                                </div>
+
+                                                <div class="col-md-12 col-sm-12 col-xs-12">
                                                 {{ form2.deliverychoice() }}
-                                                <br>
-                                                {{ form2.paymentchoice.label }}
+                                                </div>
+
+                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                {{ form2.paymentchoice.label() }}
+                                                    </div>
+                                                <div class="col-md-12 col-sm-12 col-xs-12">
                                                 {{ form2.paymentchoice() }}
-                                                <div class="form-row place-order">
-                                                    {{ form2.submit() }}
+                                                </div>
+                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                {{ form2.submit() }}
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
-                                <!--<section id="profile">-->
-                                <div role="tabpanel" class="tab-pane" id="profile">
+                                <div role="tabpanel" class="tab-pane" id="profile" name="profile">
                                     <div class="row">
                                         <div class="checkbox-form">
                                             <div class="col-md-12">
@@ -64,7 +74,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!--</section>-->
                                 <div role="tabpanel" class="tab-pane" id="message">
                                     <div class="last-check">
                                         <h3 class="checkbox9">complete</h3>

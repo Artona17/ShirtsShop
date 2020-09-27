@@ -2,13 +2,11 @@ from flask import render_template, session, redirect, url_for, request
 from . import main
 from ..models import Product, Category, Type
 from .forms import ContactForm, HowManyProducts, SortingForm, ShippingForm, ReviewForm, DeliveryandPaymentForm
-from app import db
-import re
+import json
 
 
 @main.route('/')
 def index():
-    # db.create_all()
     products = Product.query.all()
     return render_template('index.html', products=products)
 
@@ -24,8 +22,15 @@ def product(id):
     reviewForm = ReviewForm()
     product_info = Product.query.filter(Product.id == id).first_or_404()
     product_info.price = int(product_info.price)
-    # product_info.sizes = dict(product_info.sizes)
-    return render_template('single-product.html', form=reviewForm, product=product_info)
+    if product_info.sizes:
+        sizes = json.loads(product_info.sizes)
+    else:
+        sizes = {}
+    if product_info.colors:
+        colors = json.loads(product_info.colors)
+    else:
+        colors = {}
+    return render_template('single-product.html', form=reviewForm, product=product_info, sizes=sizes, colors=colors)
 
 
 @main.route('/shop', methods=['GET', 'POST'])
@@ -78,22 +83,6 @@ def shop(page=1, items_per_page=3):
                            form1=howManyProducts_form, form2=sorting_form)
 
 
-# @main.route('/shop', methods=['POST'])
-# @main.route('/shop/<int:page>', methods=['POST'])
-# def shop_forms(page=1, items_per_page=1):
-#    category = request.form['category']
-#    type = request.form['type']
-#    print(category)
-#    print(type)
-#    categories = Category.query.filter(Category.name == category).first()
-#    products = Product.query.paginate(page, items_per_page, False)
-#    #if request.method == 'POST' and form1.validate():
-#     #   how_many = form1.data
-#    #    products = Product.query.paginate(page, how_many, False)
-#    types = Type.query.all()
-#    return render_template('shop.html', types=types, categories=categories, products=products)
-
-
 @main.route('/cart')
 def cart():
     # product = Product.query.filter(Product.id == product_id).first()
@@ -118,6 +107,7 @@ def cart():
 @main.route("/add_to_cart", methods=['POST'])
 def add_to_cart():
     product_id = int(request.form['product_id'])
+    print(request.form['quantity'])
     qty = int(request.form['quantity'])
     print(session)
     if 'cart' not in session:
@@ -174,8 +164,8 @@ def contact():
 
 @main.route('/checkout', methods=['GET', 'POST'])
 def checkout():
+    Deliveryform = DeliveryandPaymentForm(request.form)
     formShip = ShippingForm()
-    Deliveryform = DeliveryandPaymentForm()
 
     product_names_prices = {}
     subtotal = 0
@@ -187,11 +177,12 @@ def checkout():
         product = Product.query.filter(Product.id == int(id[0])).first()
         print(session)
         qty = list(item.values())
-        product_names_prices.update(
-            {product.id: [product.name, int(product.price), qty[0], int(product.price * qty[0])]})
+        product_names_prices.update({product.id: [product.name, int(product.price), qty[0], int(product.price * qty[0])]})
         subtotal += int(product.price) * qty[0]
-    if request.method == 'POST' and Deliveryform.validate_on_submit():
-        print('I LOVE MYSELF AND THIS CODE')
-        return render_template('checkout.html')
+
+    if Deliveryform.validate_on_submit():
+        print(Deliveryform.deliverychoice.data)
+        print(Deliveryform.paymentchoice.data)
+        #return redirect(url_for('main.checkout', _anchor="profile", aria_controls="profile", role="tab"))
     return render_template('checkout.html', form1=formShip, form2=Deliveryform, cart=session['cart'],
                            products=product_names_prices, subtotal=subtotal)
