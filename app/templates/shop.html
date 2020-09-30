@@ -11,7 +11,7 @@
                 <div class="row">
                     <div class="col-md-12 text-center">
                         <div class="con-text">
-                            <h2 class="page-title">Я тебя люблю!!!</h2>
+                            <h2 class="page-title">Магазин</h2>
                             <p><a href="{{url_for('main.index')}}">Главная</a> | Магазин</p>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                                         {% endfor %}                                 
                                     </ul>
                                 </div>
-                                 <div class="shop-one re-shop-one">
+                                 <!--<div class="shop-one re-shop-one">
                                 <h3 class="wg-title2">Выберите цвет</h3>
                                 <ul class="product-categories">
                                     <li class="cat-item cat-item-11">
@@ -59,7 +59,7 @@
                                         <span class="count">(1)</span>
                                     </li>
                                 </ul>
-                            </div>
+                            </div>-->
                                 <div class="shop-one re-shop-one">
                                     <h3 class="wg-title2">Выбрать по цене</h3>
                                     <div class="widget shop-filter">
@@ -128,12 +128,16 @@
                                                             <div class="actions-btn">
                                                                 <a href="#" data-placement="top" data-target="#quick-view" data-trigger="hover" data-toggle="modal" data-original-title="Quick View"><i class="fa fa-eye"></i></a>
                                                                 <a data-placement="top" data-toggle="tooltip" href="#" data-original-title="Add To Wishlist"><i class="fa fa-heart"></i></a>
-                                                                <form action="/add_to_cart" method="post">
-                                                                    <input type="hidden" name="add_to_cart">
-                                                                    <input type="hidden" name="product_id" value="{{ item.id }}">
-                                                                    <input type="hidden" name="quantity" value="1">
-                                                                    <button data-toggle="tooltip" data-placement="top" title="Add To Cart"><i class="fa fa-shopping-cart"></i></button>
-                                                                </form>
+                                                                <a data-placement="top" data-toggle="tooltip" href="#" data-original-title="Add To Cart">
+                                                                    <form action="/add_to_cart" method="post">
+                                                                        <input type="hidden" name="add_to_cart">
+                                                                        <input type="hidden" name="product_id" value="{{ item.id }}">
+                                                                        <input type="hidden" name="quantity" value="1">
+                                                                        <button style="border: 0; background-color: inherit" data-toggle="tooltip" data-placement="top">
+                                                                            <i class="fa fa-shopping-cart"></i>
+                                                                        </button>
+                                                                    </form>
+                                                                </a>
                                                             </div>
                                                         </div>
                                                     </div>

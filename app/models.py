@@ -8,6 +8,15 @@ from app import login_manager
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+class Color(db.Model):
+    __tablename__ = 'colors'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True, nullable=False)
+
+class Size(db.Model):
+    __tablename__ = 'sizes'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True, nullable=False)
 
 class Product(db.Model):
     __tablename__ = 'products'

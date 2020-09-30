@@ -11,17 +11,13 @@ def index():
     return render_template('index.html', products=products)
 
 
-@main.route('/thanks')
-def thanks():
-    return render_template('thanks.html')
-
-
 @main.route('/product')
 @main.route('/product/<int:id>')
 def product(id):
     reviewForm = ReviewForm()
     product_info = Product.query.filter(Product.id == id).first_or_404()
     product_info.price = int(product_info.price)
+    session['url'] = request.path
     if product_info.sizes:
         sizes = json.loads(product_info.sizes)
     else:
@@ -41,7 +37,7 @@ def shop(page=1, items_per_page=3):
 
     types = Type.query.all()
     categories = Category.query.all()
-
+    session['url'] = request.path
     if request.method == 'POST':
         categories_info = categories
         types_info = types
@@ -107,8 +103,10 @@ def cart():
 @main.route("/add_to_cart", methods=['POST'])
 def add_to_cart():
     product_id = int(request.form['product_id'])
-    print(request.form['quantity'])
-    qty = int(request.form['quantity'])
+    if request.form['quantity'] == '#qtybutton.value':
+        qty = 1
+    else:
+        qty = int(request.form['quantity'])
     print(session)
     if 'cart' not in session:
         session['cart'] = []
@@ -124,7 +122,7 @@ def add_to_cart():
         cart_list.append({product_id: qty})
     session['cart'] = cart_list
     # flash('Товар {0} успешно добавлен в корзину!', product.name)
-    return redirect(url_for("main.shop"))
+    return redirect(session['url'])
 
 
 @main.route("/remove_from_cart", methods=['POST'])
@@ -165,7 +163,6 @@ def contact():
 @main.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     Deliveryform = DeliveryandPaymentForm(request.form)
-    formShip = ShippingForm()
 
     product_names_prices = {}
     subtotal = 0
@@ -181,8 +178,37 @@ def checkout():
         subtotal += int(product.price) * qty[0]
 
     if Deliveryform.validate_on_submit():
-        print(Deliveryform.deliverychoice.data)
-        print(Deliveryform.paymentchoice.data)
-        #return redirect(url_for('main.checkout', _anchor="profile", aria_controls="profile", role="tab"))
-    return render_template('checkout.html', form1=formShip, form2=Deliveryform, cart=session['cart'],
+        session['deliverychoice'] = Deliveryform.deliverychoice.data
+        session['paymentchoice'] = Deliveryform.paymentchoice.data
+        return redirect(url_for('main.name_address'))
+    return render_template('checkout.html', form=Deliveryform, cart=session['cart'],
                            products=product_names_prices, subtotal=subtotal)
+
+
+@main.route('/shipping', methods=['GET', 'POST'])
+def name_address():
+    formShip = ShippingForm()
+
+    product_names_prices = {}
+    subtotal = 0
+
+    for item in session['cart']:
+        print(item)
+        id = list(item.keys())
+        print(id)
+        product = Product.query.filter(Product.id == int(id[0])).first()
+        print(session)
+        qty = list(item.values())
+        product_names_prices.update({product.id: [product.name, int(product.price), qty[0], int(product.price * qty[0])]})
+        subtotal += int(product.price) * qty[0]
+
+    if formShip.validate_on_submit():
+        return redirect(url_for('main.thanks'))
+
+    return render_template('name_address.html', form=formShip, cart=session['cart'], delivery=session['deliverychoice'],
+                           payment=session['paymentchoice'], products=product_names_prices, subtotal=subtotal)
+
+
+@main.route('/thanks')
+def thanks():
+    return render_template('thanks.html')

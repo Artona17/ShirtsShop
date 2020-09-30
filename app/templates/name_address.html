@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block head %}
+    {% block title %}{% endblock %}
+    {{super()}}
+    <title>Tasnm || Checkout</title>
+       <!-- pages-title-start -->
+        <section class="contact-img-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <div class="con-text">
+                            <h2 class="page-title">Оформление заказа</h2>
+                            <p><a href="#">Главная</a> | Оформление заказа</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- pages-title-end -->
+{% endblock %}
+{% block content %}
+{% block page_content %}{% endblock %}
+ <div class="checkout-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-7 col-sm-12">
+                        <div class="text">
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="profile" name="profile">
+                                    <div class="row">
+                                        <div class="checkbox-form">
+                                            <div class="col-md-12">
+                                                <h3 class="checkbox9">Данные заказа</h3>
+                                                <form action method="post" class="form" role="form">
+                                                    {{ form.csrf_token() }}
+                                                    <div class="form-group  required">
+                                                        <label class="control-label" for="FirstName">{{ form.FirstName.label() }}</label>
+                                                        <input class="form-control" id="FirstName" name="FirstName" required="" type="text" value="">
+                                                    </div>
+                                                    <div class="form-group  required">
+                                                        <label class="control-label" for="LastName">{{ form.LastName.label() }}</label>
+                                                        <input class="form-control" id="LastName" name="LastName" required="" type="text" value="">
+                                                    </div>
+                                                    <div class="form-group  required">
+                                                        <label class="control-label" for="Email">{{ form.Email.label() }}</label>
+                                                        <input class="form-control" id="Email" name="Email" required="" type="text" value="">
+                                                    </div>
+                                                    <div class="form-group  required">
+                                                        <label class="control-label" for="phone">{{ form.phone.label() }}</label>
+                                                        <input class="form-control" id="phone" name="phone" required="" type="text" value="">
+                                                    </div>
+                                                    {% if delivery == "Почтой" %}
+                                                        <div class="form-group ">
+                                                            <label class="control-label" for="town">{{ form.town.label() }}</label>
+                                                            <input class="form-control" id="town" name="town" required="" type="text" value="">
+                                                        </div>
+                                                        <div class="form-group ">
+                                                            <label class="control-label" for="postcode">{{ form.postcode.label() }}</label>
+                                                            <input class="form-control" id="postcode" name="postcode" required="" type="text" value="">
+                                                        </div>
+                                                    {% elif delivery == "Курьером" %}
+                                                        <div class="form-group ">
+                                                            <label class="control-label" for="town">{{ form.town.label() }}</label>
+                                                            <input class="form-control" id="town" name="town" required="" type="text" value="">
+                                                        </div>
+                                                    {% endif %}
+                                                    <a style="position: left; margin: 0 50 10 0" class="btn btn-default col-md-5" id="submit" name="submit" href="{{url_for('main.checkout')}}">Назад</a>
+                                                    <input style="position: right; margin: 0 50 10 0" class="btn btn-default col-md-5" id="submit" name="submit" type="submit" value="Продолжить">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5 col-sm-12">
+                        <div class="ro-checkout-summary">
+                            <div class="ro-title">
+                                <h3 class="checkbox9">Заказ</h3>
+                            </div>
+                            <div class="ro-body">
+                                {% for item in products %}
+                                <div class="ro-item">
+                                    <div class="ro-image">
+                                        <a href="{{url_for('main.product', id = item)}}">
+                                            <img src="{{url_for('static', filename='img/products/c15.jpg')}}" alt="">
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <div class="tb-beg">
+                                            <a href="{{url_for('main.product', id = item)}}">{{ products.get(item)[0] }}</a>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="ro-price">
+                                            <span class="amount">{{ products.get(item)[1] }}₽</span>
+                                        </div>
+                                        <div class="ro-quantity">
+                                            <strong class="product-quantity">× {{ products.get(item)[2] }}</strong>
+                                        </div>
+                                        <div class="product-total">
+                                            <span class="amount">= {{ products.get(item)[1]*products.get(item)[2] }}₽</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="ro-footer">
+                                <div>
+                                    <p>
+                                        Подытог
+                                        <span>
+                                            <span class="amount">{{ subtotal }}₽</span>
+                                        </span>
+                                    </p>
+                                    <div class="ro-divide"></div>
+                                </div>
+                                <div class="shipping">
+                                    <p> Доставка: </p>
+                                    <div class="ro-shipping-method">
+                                        <p>
+                                            {{ delivery }}
+                                        </p>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="ro-divide"></div>
+                                </div>
+                                <div class="shipping">
+                                    <div class="ro-shipping-method">
+                                        <p>
+                                            {{ payment }}
+                                        </p>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="ro-divide"></div>
+                                </div>
+                                <div>
+                                    <p>
+                                        Общая сумма: 
+                                        <span>
+                                            <strong>
+                                                <span class="amount">{{ subtotal }}₽</span>
+                                            </strong>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- checkout  content section end -->
+            {{super()}}
+{% endblock %}

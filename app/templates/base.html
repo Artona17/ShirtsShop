@@ -84,7 +84,7 @@
                                         <ul>
                                             <li><a href="{{url_for('main.index')}}">Главная</a></li>
                                             <li><a href="{{url_for('main.shop')}}">Магазин</a>
-                                                <div class="magamenu">
+                                                 <!--<div class="magamenu">
                                                     <ul class="again">
                                                         <li class="single-menu colmd4">
                                                             <span>men’s wear</span>
@@ -106,7 +106,7 @@
                                                             <a href="#">rings</a>
                                                         </li>
                                                     </ul>
-                                                </div>
+                                                </div>-->
                                             </li>
                                             <li><a href="{{url_for('main.contact')}}">Связаться</a></li>
                                         </ul>
@@ -318,14 +318,21 @@
                                                                         <div class="por-dse clearfix responsive-othre">
                                                                             <ul class="other-btn">
                                                                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                                                                <li>
+                                                                                    <a href="#">
+                                                                                        <form action="/add_to_cart" method="post">
+                                                                                            <input type="hidden" name="add_to_cart">
+                                                                                            <input type="hidden" name="product_id" value="{{ item.id }}">
+                                                                                            <input type="hidden" name="quantity" value="1">
+                                                                                            <button style="border: 0; background-color: inherit"
+                                                                                            data-toggle="tooltip" data-placement="top">
+                                                                                            <i class="fa fa-shopping-cart"></i>
+                                                                                            </button>
+                                                                                        </form>
+                                                                                    </a>
+                                                                                </li>
                                                                             </ul>
                                                                         </div>
-                                                                        <form action="/add_to_cart" method="post">
-                                                                            <input type="hidden" name="add_to_cart">
-                                                                            <input type="hidden" name="product_id" value="{{ item.id }}">
-                                                                            <input type="hidden" name="quantity" value="1">
-                                                                            <button name = "atcart" class="fa fa-shopping-cart"></button>
-                                                                        </form>
                                                                     </div>
                                                                 </div>
                                                             </div>

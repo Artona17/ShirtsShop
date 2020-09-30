@@ -4627,6 +4627,7 @@ input.cart-plus-minus-box {
   background-position: center top;
   background-repeat: no-repeat;
   padding: 200px 0 100px;
+  background-size: 100%;
 }
 h2.page-title {
   color: #fff;

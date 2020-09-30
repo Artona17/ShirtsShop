@@ -128,7 +128,7 @@
                                             <div class="add-to-cart">
                                                  <form action="/add_to_cart" method="post">
                                                     <div class="input-content">
-                                                        <label>Quantity:</label>
+                                                        <label>Кол-во:</label>
                                                         <div class="quantity">
                                                             <div class="cart-plus-minus">
                                                               <input type="text" value="1" name="qtybutton" class="cart-plus-minus-box">
@@ -139,10 +139,8 @@
                                                     <div class="product-icon">
                                                             <input type="hidden" name="add_to_cart">
                                                             <input type="hidden" name="product_id" value="{{ product.id }}">
-                                                            <button name = "atcart" class="fa fa-shopping-cart"></button>
-                                                        <!--<a href="#">
-                                                            <i class="fa fa-heart"></i>
-                                                        </a>-->
+                                                            <button style="background-color: white;border: 1px solid #d3d3d3;width: 12%;height: 35px;"
+                                                                name = "atcart" class="fa fa-shopping-cart"></button>
                                                     </div>
                                                 </form>
                                             </div>

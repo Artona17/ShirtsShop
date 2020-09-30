@@ -22,12 +22,10 @@ class SortingForm(FlaskForm):
 class ShippingForm(FlaskForm):
     FirstName = StringField('Фамилия', validators=[Length(1, 64), DataRequired()])
     LastName = StringField('Имя', validators=[Length(1, 64), DataRequired()])
-    FatherName = StringField('Отчество (если есть)', validators=[Length(1, 64)])
     Email = StringField('E-Mail', validators=[Length(8, 64), Email(), DataRequired()])
     phone = StringField('Телефон', validators=[DataRequired()])
-    country = SelectField('Страна', choices=['Россия', 'Украина', 'Беларусь', 'Казахстан'])
-    town = StringField('Полный адрес', validators=[DataRequired()])
-    postcode = StringField('Почтовый индекс', validators=[DataRequired()])
+    town = StringField('Полный адрес')
+    postcode = StringField('Почтовый индекс')
     submit = SubmitField('Продолжить')
 
 
@@ -39,6 +37,6 @@ class ReviewForm(FlaskForm):
 
 
 class DeliveryandPaymentForm(FlaskForm):
-    deliverychoice = RadioField('Способ доставки:', choices=[('first_option', 'Самовывоз'), ('second_option', 'Курьером'), ('third_option', 'Почтой')], validators=[DataRequired()])
+    deliverychoice = RadioField('Способ доставки:', choices=[('Самовывоз', 'Самовывоз'), ('Курьером', 'Курьером'), ('Почтой', 'Почтой')], validators=[DataRequired()])
     paymentchoice = RadioField('Способ оплаты:', choices=['Оплата картой на сайте', 'Оплата при получении'], validators=[DataRequired()])
     submit = SubmitField('Продолжить')

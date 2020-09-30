@@ -39,44 +39,26 @@
                                             </div>
                                             <form class="all-payment" id ="payment" method="post">
 
-                                                {{ form2.csrf_token() }}
+                                                {{ form.csrf_token() }}
                                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                                {{ form2.deliverychoice.label() }}
+                                                {{ form.deliverychoice.label() }}
                                                 </div>
 
                                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                                {{ form2.deliverychoice() }}
+                                                {{ form.deliverychoice() }}
                                                 </div>
 
                                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                                {{ form2.paymentchoice.label() }}
+                                                {{ form.paymentchoice.label() }}
                                                     </div>
                                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                                {{ form2.paymentchoice() }}
+                                                {{ form.paymentchoice() }}
                                                 </div>
                                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                                {{ form2.submit() }}
+                                                {{ form.submit() }}
                                                 </div>
                                             </form>
                                         </div>
-                                    </div>
-                                </div>
-                                <div role="tabpanel" class="tab-pane" id="profile" name="profile">
-                                    <div class="row">
-                                        <div class="checkbox-form">
-                                            <div class="col-md-12">
-                                                <h3 class="checkbox9">SHIPPING ADDRESS DETAILS</h3>
-                                                {{ wtf.quick_form(form1) }}
-                                                <div class="form-row place-order">
-                                                    <a href="#home" aria-controls="profile" role="tab" data-toggle="tab">Назад</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div role="tabpanel" class="tab-pane" id="message">
-                                    <div class="last-check">
-                                        <h3 class="checkbox9">complete</h3>
                                     </div>
                                 </div>
                             </div>
@@ -122,16 +104,6 @@
                                             <span class="amount">{{ subtotal }}₽</span>
                                         </span>
                                     </p>
-                                    <div class="ro-divide"></div>
-                                </div>
-                                <div class="shipping">
-                                    <p> Доставка: </p>
-                                    <div class="ro-shipping-method">
-                                        <p>
-                                            Shipping Local Pickup (Free)
-                                        </p>
-                                    </div>
-                                    <div class="clearfix"></div>
                                     <div class="ro-divide"></div>
                                 </div>
                                 <div>
