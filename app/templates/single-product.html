@@ -10,7 +10,7 @@
                 <div class="row">
                     <div class="col-md-12 text-center">
                         <div class="con-text">
-                            <h2 class="page-title">{{product.name}}</h2>
+                            <h2 class="page-title">{{product.product_name}}</h2>
                             <p><a href="{{url_for('main.index')}}">Главная</a> | Товар</p>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                             <div class="col-md-6 col-sm-6">
                                 <div class="cras">
                                     <div class="product-name">
-                                        <h1>{{product.name}}</h1>
+                                        <h1>{{product.product_name}}</h1>
                                     </div>
                                     <div class="pro-rating cendo-pro">
                                         <div class="pro_one">
@@ -98,21 +98,17 @@
                                         Артикул: {{product.id}}
                                     </p>
                                     <p class="availability in-stock2", style="font-size:120%">
-                                        Осталось: {{product.quantity}}
+                                        Осталось: {{quantity}}
                                     </p>
                                     <!--<div class="short-description">-->
                                         <p>Выберите цвет: 
-                                            {% for i in sizes %}
-                                                {% if sizes[i] != 0 %}
-                                                   <input type="checkbox" name = "type" value='{{i}}'>{{i}}
-                                                {% endif %}
+                                            {% for size in sizes %}
+                                                   <input type="checkbox" name = "type" value='{{size.id}}'>{{size.size}}
                                             {% endfor %}
                                         </p>
                                         <p>Выберите размер:
-                                            {% for i in colors %}
-                                                {% if colors[i] != 0 %}
-                                                    <input type="checkbox" name = "type" value='{{i}}'>{{i}}
-                                                {% endif %}
+                                            {% for color in colors %}
+                                                    <input type="checkbox" name = "type" value='{{color.id}}'>{{color.name}}
                                             {% endfor %}
                                         </p>
                                     <!--</div>-->
