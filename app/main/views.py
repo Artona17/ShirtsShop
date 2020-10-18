@@ -15,16 +15,16 @@ def index():
 @main.route('/product/<int:product_id>')
 def product(product_id):
     review_form = ReviewForm()
-    product_info = Product.query.filter(Product.id == product_id).first_or_404() #изменить на Product.product_id == id.all()
+    product_info = Product.query.filter(Product.id == product_id).first_or_404()
     product_info.price = int(product_info.price)
     session['url'] = request.path
     sizes = []
     colors = []
-    if product_info.size_id: #здесь
+    if product_info.size_id: #ИЗМЕНИТЬ здесь
         sizes.append(product_info.size_id)
     else:
         sizes = []
-    if product_info.color_id: #здесь
+    if product_info.color_id: #ИЗМЕНИТЬ здесь
         colors.append(product_info.color_id)
     else:
         colors = []
@@ -78,11 +78,10 @@ def shop(page=1, items_per_page=3):
             page = 0
 
         print(products_ids)
-        products = Product.query.dictinct(Product.name).filter(Product.id.in_(products_ids)).paginate(page, items_per_page, False) #здесь
+        products = Product.query.dictinct(Product.name).filter(Product.id.in_(products_ids)).paginate(page, items_per_page, False) #ИЗМЕНИТЬ здесь
         print(products)
     else:
-        products = Product.query\
-            .paginate(page, items_per_page, False)
+        products = Product.query.paginate(page, items_per_page, False)
 
     return render_template('shop.html', types=types, fandoms=fandoms, products=products,
                            form1=howManyProducts_form, form2=sorting_form)
@@ -99,9 +98,9 @@ def cart():
         product_names_prices = {}
         for item in session['cart']:
             id = list(item.keys())
-            product = Product.query.filter(Product.id == int(id[0])).first() #(Product.product_id==int(id[0])).all()
+            product = Product.query.filter(Product.id == int(id[0])).first() #(Product.product_id==int(id[0])).all() #ИЗМЕНИТЬ здесь
             qty = list(item.values())
-            product_names_prices.update({product.id: [product.name, int(product.price), qty[0]]})
+            product_names_prices.update({product.id: [product.name, int(product.price), qty[0]]}) #ИЗМЕНИТЬ здесь
             subtotal += int(product.price) * qty[0]
         print(session)
         return render_template('shopping-cart.html', products=product_names_prices, cart=session['cart'],
@@ -148,17 +147,17 @@ def remove_from_cart():
     return redirect(url_for('main.cart'))
 
 
-@main.route("/how_much", methods=['POST'])
-def how_much():
-    qty = int(request.form.get('quantity'))
-    print(qty)
-    product_id = int(request.form['product_id'])
-    print(product_id)
-    print(session)
-    cart_list = session['cart']
-    session['cart'] = cart_list
-    print(session)
-    return redirect(url_for('main.cart'))
+#@main.route("/how_much", methods=['POST'])
+#def how_much():
+#    qty = int(request.form.get('quantity'))
+#    print(qty)
+#    product_id = int(request.form['product_id'])
+#    print(product_id)
+#    print(session)
+#    cart_list = session['cart']
+#    session['cart'] = cart_list
+#    print(session)
+#    return redirect(url_for('main.cart'))
 
 
 @main.route('/contact')
@@ -178,7 +177,7 @@ def checkout():
         id = list(item.keys())
         product = Product.query.filter(Product.id == int(id[0])).first() #(Product.product_id==int(id[0])).all()
         qty = list(item.values())
-        product_names_prices.update({product.id: [product.name, int(product.price), qty[0], int(product.price * qty[0])]})
+        product_names_prices.update({product.id: [product.name, int(product.price), qty[0], int(product.price * qty[0])]}) #ИЗМЕНИТЬ здесь
         subtotal += int(product.price) * qty[0]
 
     if Deliveryform.validate_on_submit():
@@ -201,7 +200,7 @@ def name_address():
         id = list(item.keys())
         product = Product.query.filter(Product.id == int(id[0])).first() #(Product.product_id==int(id[0])).all()
         qty = list(item.values())
-        product_names_prices.update({product.id: [product.name, int(product.price), qty[0], int(product.price * qty[0])]})
+        product_names_prices.update({product.id: [product.name, int(product.price), qty[0], int(product.price * qty[0])]}) #ИЗМЕНИТЬ здесь
         subtotal += int(product.price) * qty[0]
 
     if formShip.validate_on_submit():
