@@ -32,7 +32,7 @@ class ShippingForm(FlaskForm):
 class ReviewForm(FlaskForm):
     name = StringField('Ваши имя и фамилия', validators=[Length(8, 64), DataRequired()])
     enquiry = TextAreaField('Комментарий', validators=[DataRequired()])
-    rating = RadioField('Рейтинг:', choices=[1, 2, 3, 4, 5])
+    rating = RadioField('Рейтинг:', choices=[(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)])
     submit = SubmitField('Отправить')
 
 
@@ -40,3 +40,8 @@ class DeliveryandPaymentForm(FlaskForm):
     deliverychoice = RadioField('Способ доставки:', choices=[('Самовывоз', 'Самовывоз'), ('Курьером', 'Курьером'), ('Почтой', 'Почтой')], validators=[DataRequired()])
     paymentchoice = RadioField('Способ оплаты:', choices=['Оплата картой на сайте', 'Оплата при получении'], validators=[DataRequired()])
     submit = SubmitField('Продолжить')
+
+
+class SelectSizeandColorForm(FlaskForm):
+    sizechoice = SelectField('Размер:', choices=['S', 'M', 'L', 'XL'])
+    colorchoice = SelectField('Цвет:', choices=['Зелёный', 'Белый', 'Синий', 'Красный', 'Чёрный'])

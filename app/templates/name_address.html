@@ -122,7 +122,7 @@
                                     <p> Доставка: </p>
                                     <div class="ro-shipping-method">
                                         <p>
-                                            {{ delivery }}
+                                            {{ delivery }} ({{prices[delivery]}} ₽)  
                                         </p>
                                     </div>
                                     <div class="clearfix"></div>
@@ -131,7 +131,7 @@
                                 <div class="shipping">
                                     <div class="ro-shipping-method">
                                         <p>
-                                            {{ payment }}
+                                            {{ payment }} 
                                         </p>
                                     </div>
                                     <div class="clearfix"></div>
@@ -142,7 +142,7 @@
                                         Общая сумма: 
                                         <span>
                                             <strong>
-                                                <span class="amount">{{ subtotal }}₽</span>
+                                                <span class="amount">{{ subtotal+prices[delivery] }}₽</span>
                                             </strong>
                                         </span>
                                     </p>

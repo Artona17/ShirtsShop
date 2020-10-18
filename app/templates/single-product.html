@@ -101,21 +101,17 @@
                                         Осталось: {{product.quantity}}
                                     </p>
                                     <!--<div class="short-description">-->
-                                        <p>Доступные размеры: 
-                                            {% for i in sizes.keys() %}
-                                                {% if sizes[i] == 0 %}
-                                                    <s>{{i}}</s>
-                                                {% else %}
-                                                    {{i}}
+                                        <p>Выберите цвет: 
+                                            {% for i in sizes %}
+                                                {% if sizes[i] != 0 %}
+                                                   <input type="checkbox" name = "type" value='{{i}}'>{{i}}
                                                 {% endif %}
                                             {% endfor %}
                                         </p>
-                                        <p>Доступные цвета:
-                                            {% for i in colors.keys() %}
-                                                {% if colors[i] == 0 %}
-                                                    <s>{{i}}</s>
-                                                {% else %}
-                                                    {{i}}
+                                        <p>Выберите размер:
+                                            {% for i in colors %}
+                                                {% if colors[i] != 0 %}
+                                                    <input type="checkbox" name = "type" value='{{i}}'>{{i}}
                                                 {% endif %}
                                             {% endfor %}
                                         </p>
