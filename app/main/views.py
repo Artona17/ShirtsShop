@@ -1,7 +1,8 @@
 from flask import render_template, session, redirect, url_for, request
 from . import main
-from ..models import Product, Fandom, Type
-from .forms import ContactForm, HowManyProducts, SortingForm, ShippingForm, ReviewForm, DeliveryandPaymentForm, SelectSizeandColorForm
+from ..models import Product, Fandom, Type, Item, Size, Color, ProductInfo
+from .forms import ContactForm, HowManyProducts, SortingForm, ShippingForm, ReviewForm, DeliveryandPaymentForm, \
+    SelectSizeandColorForm
 import json
 
 
@@ -17,24 +18,34 @@ def product(product_id):
     review_form = ReviewForm()
     product_info = Product.query.filter(Product.id == product_id).first_or_404()
     product_info.price = int(product_info.price)
+
+    items = Item.query.filter(Item.product_info_id == product_id).all()
+    quantity = 0
+
+    if len(items) == 0:
+        # redirect to the page where it says that products is not at the stock now
+        pass
+
     session['url'] = request.path
-    sizes = []
-    colors = []
-    if product_info.size_id: #ИЗМЕНИТЬ здесь
-        sizes.append(product_info.size_id)
-    else:
-        sizes = []
-    if product_info.color_id: #ИЗМЕНИТЬ здесь
-        colors.append(product_info.color_id)
-    else:
-        colors = []
+    size_ids = []
+    color_ids = []
+
+    for item in items:
+        size_ids.append(item.size_id)
+        color_ids.append(item.color_id)
+        quantity += item.quantity
+
+    sizes = Size.query.filter(Size.id.in_(set(size_ids))).all()
+    colors = Color.query.filter(Color.id.in_(set(color_ids))).all()
+
     if not review_form.validate():
         print(review_form.errors)
-        #now = datetime.datetime.now()
-        #review = Review(product_id=id, date=now.strftime("%d-%m-%Y"), name=review_form.name.data, comment=review_form.enquiry.data, rating=review_form.rating.data)
-        #db.session.add(review)
-        #print(db.session)
-    return render_template('single-product.html', form=review_form, product=product_info, sizes=sizes, colors=colors)
+        # now = datetime.datetime.now()
+        # review = Review(product_id=id, date=now.strftime("%d-%m-%Y"), name=review_form.name.data, comment=review_form.enquiry.data, rating=review_form.rating.data)
+        # db.session.add(review)
+        # print(db.session)
+    return render_template('single-product.html', form=review_form,
+                           product=product_info, sizes=sizes, colors=colors, quantity=quantity)
 
 
 @main.route('/shop', methods=['GET', 'POST'])
@@ -78,7 +89,8 @@ def shop(page=1, items_per_page=3):
             page = 0
 
         print(products_ids)
-        products = Product.query.filter(Product.id.in_(products_ids)).paginate(page, items_per_page, False) #ИЗМЕНИТЬ здесь
+        products = Product.query.filter(Product.id.in_(products_ids)).paginate(page, items_per_page,
+                                                                               False)  # ИЗМЕНИТЬ здесь
         print(products)
     else:
         products = Product.query.paginate(page, items_per_page, False)
@@ -98,9 +110,10 @@ def cart():
         product_names_prices = {}
         for item in session['cart']:
             id = list(item.keys())
-            product = Product.query.filter(Product.id == int(id[0])).first() #(Product.product_id==int(id[0])).all() #ИЗМЕНИТЬ здесь
+            product = Product.query.filter(
+                Product.id == int(id[0])).first()  # (Product.product_id==int(id[0])).all() #ИЗМЕНИТЬ здесь
             qty = list(item.values())
-            product_names_prices.update({product.id: [product.name, int(product.price), qty[0]]}) #ИЗМЕНИТЬ здесь
+            product_names_prices.update({product.id: [product.name, int(product.price), qty[0]]})  # ИЗМЕНИТЬ здесь
             subtotal += int(product.price) * qty[0]
         print(session)
         return render_template('shopping-cart.html', products=product_names_prices, cart=session['cart'],
@@ -110,6 +123,10 @@ def cart():
 @main.route("/add_to_cart", methods=['POST'])
 def add_to_cart():
     product_id = int(request.form['product_id'])
+    color_id = 1 #int(request.form['color_id'])
+    size_id = 1#int(request.form['size_id'])
+
+
     if request.form['quantity'] == '#qtybutton.value':
         qty = 1
     else:
@@ -147,8 +164,8 @@ def remove_from_cart():
     return redirect(url_for('main.cart'))
 
 
-#@main.route("/how_much", methods=['POST'])
-#def how_much():
+# @main.route("/how_much", methods=['POST'])
+# def how_much():
 #    qty = int(request.form.get('quantity'))
 #    print(qty)
 #    product_id = int(request.form['product_id'])
@@ -175,9 +192,10 @@ def checkout():
 
     for item in session['cart']:
         id = list(item.keys())
-        product = Product.query.filter(Product.id == int(id[0])).first() #(Product.product_id==int(id[0])).all()
+        product = Product.query.filter(Product.id == int(id[0])).first()  # (Product.product_id==int(id[0])).all()
         qty = list(item.values())
-        product_names_prices.update({product.id: [product.name, int(product.price), qty[0], int(product.price * qty[0])]}) #ИЗМЕНИТЬ здесь
+        product_names_prices.update(
+            {product.id: [product.name, int(product.price), qty[0], int(product.price * qty[0])]})  # ИЗМЕНИТЬ здесь
         subtotal += int(product.price) * qty[0]
 
     if Deliveryform.validate_on_submit():
@@ -198,16 +216,18 @@ def name_address():
 
     for item in session['cart']:
         id = list(item.keys())
-        product = Product.query.filter(Product.id == int(id[0])).first() #(Product.product_id==int(id[0])).all()
+        product = Product.query.filter(Product.id == int(id[0])).first()  # (Product.product_id==int(id[0])).all()
         qty = list(item.values())
-        product_names_prices.update({product.id: [product.name, int(product.price), qty[0], int(product.price * qty[0])]}) #ИЗМЕНИТЬ здесь
+        product_names_prices.update(
+            {product.id: [product.name, int(product.price), qty[0], int(product.price * qty[0])]})  # ИЗМЕНИТЬ здесь
         subtotal += int(product.price) * qty[0]
 
     if formShip.validate_on_submit():
         return redirect(url_for('main.thanks'))
 
     return render_template('name_address.html', form=formShip, cart=session['cart'], delivery=session['deliverychoice'],
-                           payment=session['paymentchoice'], products=product_names_prices, subtotal=subtotal, prices=DELIVERYPRICE)
+                           payment=session['paymentchoice'], products=product_names_prices, subtotal=subtotal,
+                           prices=DELIVERYPRICE)
 
 
 @main.route('/thanks')

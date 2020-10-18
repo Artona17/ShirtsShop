@@ -45,7 +45,7 @@ class Color(db.Model):
 class Size(db.Model):
     __tablename__ = 'sizes'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=True, nullable=False)
+    size = db.Column(db.String(64), unique=True, nullable=False)
 
 
 class Review(db.Model):
@@ -67,3 +67,11 @@ class Order(db.Model):
     phone = db.Column(db.String(12), nullable=False)
     address = db.Column(db.String(255), nullable=False)
     postcode = db.Column(db.String(10), nullable=False)
+
+
+class ProductInfo:
+    product_info_id = 0
+    size_id = 0
+    color_id = 0
+
+
