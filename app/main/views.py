@@ -78,7 +78,7 @@ def shop(page=1, items_per_page=3):
             page = 0
 
         print(products_ids)
-        products = Product.query.dictinct(Product.name).filter(Product.id.in_(products_ids)).paginate(page, items_per_page, False) #ИЗМЕНИТЬ здесь
+        products = Product.query.filter(Product.id.in_(products_ids)).paginate(page, items_per_page, False) #ИЗМЕНИТЬ здесь
         print(products)
     else:
         products = Product.query.paginate(page, items_per_page, False)

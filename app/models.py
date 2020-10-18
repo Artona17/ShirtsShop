@@ -11,11 +11,12 @@ class Item(db.Model):
 
 
 class Product(db.Model):
+    __tablename__ = 'products_info'
     id = db.Column(db.Integer, primary_key=True)
     price = db.Column(db.Numeric, nullable=False)
     description = db.Column(db.String(255), nullable=False)
-    name = db.Column(db.String(64), unique=True)
-    image = db.Column(db.String(32), nullable=True)
+    product_name = db.Column(db.String(64), unique=True)
+    image_link = db.Column(db.String(32), nullable=True)
     score = db.Column(db.SmallInteger, nullable=True)
     type_id = db.Column(db.Integer, db.ForeignKey('types.id'))
     fandom_id = db.Column(db.Integer, db.ForeignKey('fandom.id'))
