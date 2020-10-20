@@ -70,8 +70,8 @@ class Order(db.Model):
 
 
 class ProductInfo:
-    product_info_id = 0
-    size_id = 0
-    color_id = 0
+    quantity = 0
+    size = 0
+    color = 0
 
 

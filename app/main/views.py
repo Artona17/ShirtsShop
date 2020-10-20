@@ -1,15 +1,7 @@
 from flask import render_template, session, redirect, url_for, request
 from . import main
-from ..models import Product, Fandom, Type, Item, Size, Color, ProductInfo
-from .forms import ContactForm, HowManyProducts, SortingForm, ShippingForm, ReviewForm, DeliveryandPaymentForm, \
-    SelectSizeandColorForm
-import json
-
-
-@main.route('/')
-def index():
-    products = Product.query.all()
-    return render_template('index.html', products=products)
+from ..models import Product, Fandom, Type, Item, Size, Color
+from .forms import ContactForm, HowManyProducts, SortingForm, ShippingForm, ReviewForm, DeliveryandPaymentForm, SelectSizeandColorForm
 
 
 @main.route('/product')
@@ -108,79 +100,18 @@ def cart():
     else:
         subtotal = 0
         product_names_prices = {}
+
         for item in session['cart']:
-            id = list(item.keys())
-            product = Product.query.filter(
-                Product.id == int(id[0])).first()  # (Product.product_id==int(id[0])).all() #ИЗМЕНИТЬ здесь
-            qty = list(item.values())
-            product_names_prices.update({product.id: [product.name, int(product.price), qty[0]]})  # ИЗМЕНИТЬ здесь
-            subtotal += int(product.price) * qty[0]
+            print(session)
+            id = list(item)
+            print(item)
+            product = Product.query.filter(Product.id == int(id[0])).first()
+            qty = session['cart'][item][0]
+            product_names_prices.update({product.id: [product.product_name, int(product.price), qty, int(product.price * qty), int(session['cart'][item][1]), int(session['cart'][item][2])]})
+            subtotal += int(product.price) * qty
         print(session)
         return render_template('shopping-cart.html', products=product_names_prices, cart=session['cart'],
                                subtotal=subtotal)
-
-
-@main.route("/add_to_cart", methods=['POST'])
-def add_to_cart():
-    product_id = int(request.form['product_id'])
-    color_id = 1 #int(request.form['color_id'])
-    size_id = 1#int(request.form['size_id'])
-
-
-    if request.form['quantity'] == '#qtybutton.value':
-        qty = 1
-    else:
-        qty = int(request.form['quantity'])
-    print(session)
-    if 'cart' not in session:
-        session['cart'] = []
-    cart_list = session['cart']
-    for item in cart_list:
-        print(item)
-        id = int(list(item.keys())[0])
-        qty_was = list(item.values())[0]
-        if id == product_id:
-            item.update({str(id): qty_was + qty})
-            break
-    else:
-        cart_list.append({product_id: qty})
-    session['cart'] = cart_list
-    # flash('Товар {0} успешно добавлен в корзину!', product.name)
-    return redirect(session['url'])
-
-
-@main.route("/remove_from_cart", methods=['POST'])
-def remove_from_cart():
-    product_id = int(request.form['product_id'])
-    cart_list = session['cart']
-    for item in cart_list:
-        print(item)
-        id = int(list(item.keys())[0])
-        print(id)
-        if id == product_id:
-            cart_list.remove(item)
-    session['cart'] = cart_list
-    print(session)
-    return redirect(url_for('main.cart'))
-
-
-# @main.route("/how_much", methods=['POST'])
-# def how_much():
-#    qty = int(request.form.get('quantity'))
-#    print(qty)
-#    product_id = int(request.form['product_id'])
-#    print(product_id)
-#    print(session)
-#    cart_list = session['cart']
-#    session['cart'] = cart_list
-#    print(session)
-#    return redirect(url_for('main.cart'))
-
-
-@main.route('/contact')
-def contact():
-    form = ContactForm()
-    return render_template('contact.html', form=form)
 
 
 @main.route('/checkout', methods=['GET', 'POST'])
@@ -191,12 +122,11 @@ def checkout():
     subtotal = 0
 
     for item in session['cart']:
-        id = list(item.keys())
-        product = Product.query.filter(Product.id == int(id[0])).first()  # (Product.product_id==int(id[0])).all()
-        qty = list(item.values())
-        product_names_prices.update(
-            {product.id: [product.name, int(product.price), qty[0], int(product.price * qty[0])]})  # ИЗМЕНИТЬ здесь
-        subtotal += int(product.price) * qty[0]
+        id = list(item)
+        product = Product.query.filter(Product.id == int(id[0])).first()
+        qty = session['cart'][item][0]
+        product_names_prices.update({product.id: [product.product_name, int(product.price), qty, int(product.price * qty), int(session['cart'][item][1]), int(session['cart'][item][2])]})
+        subtotal += int(product.price) * qty
 
     if Deliveryform.validate_on_submit():
         session['deliverychoice'] = Deliveryform.deliverychoice.data
@@ -215,12 +145,11 @@ def name_address():
     subtotal = 0
 
     for item in session['cart']:
-        id = list(item.keys())
-        product = Product.query.filter(Product.id == int(id[0])).first()  # (Product.product_id==int(id[0])).all()
-        qty = list(item.values())
-        product_names_prices.update(
-            {product.id: [product.name, int(product.price), qty[0], int(product.price * qty[0])]})  # ИЗМЕНИТЬ здесь
-        subtotal += int(product.price) * qty[0]
+        id = list(item)
+        product = Product.query.filter(Product.id == int(id[0])).first()
+        qty = session['cart'][item][0]
+        product_names_prices.update({product.id: [product.product_name, int(product.price), qty, int(product.price * qty), int(session['cart'][item][1]), int(session['cart'][item][2])]})
+        subtotal += int(product.price) * qty
 
     if formShip.validate_on_submit():
         return redirect(url_for('main.thanks'))
@@ -230,6 +159,77 @@ def name_address():
                            prices=DELIVERYPRICE)
 
 
+@main.route("/add_to_cart", methods=['POST'])
+def add_to_cart():
+    product_id = int(request.form['product_id'])
+    color_id = 1  # int(request.form['color'])
+    size_id = 1  # int(request.form['size'])
+
+    if request.form['quantity'] == '#qtybutton.value':
+        qty = 1
+    else:
+        qty = int(request.form['quantity'])
+    print(session)
+    if 'cart' not in session:
+        session['cart'] = {}
+    cart_list = session['cart']
+    for item in cart_list:
+        print(item)
+        id = int(item)
+        qty_was = session['cart'][item][0]
+        color = int(session['cart'][item][1])
+        size = int(session['cart'][item][2])
+        if id == product_id and color == color_id and size == size_id:
+            session['cart'].update({str(id): [qty_was + qty, color, size]})
+            break
+    else:
+        cart_list.update({product_id: [qty, color_id, size_id]})
+    session['cart'] = cart_list
+    # flash('Товар {0} успешно добавлен в корзину!', product.name)
+    return redirect(session['url'])
+
+
+@main.route("/remove_from_cart", methods=['POST'])
+def remove_from_cart():
+    product_id = int(request.form['product_id'])
+    color_id = int(request.form['color_id'])
+    size_id = int(request.form['size_id'])
+    cart_list = session['cart'].copy()
+    for item in session['cart']:
+        id = int(item)
+        color = int(session['cart'][item][1])
+        size = int(session['cart'][item][2])
+        if id == product_id and color == color_id and size == size_id:
+            del cart_list[item]
+    session['cart'] = cart_list
+    print(session)
+    return redirect(url_for('main.cart'))
+
+
+@main.route('/')
+def index():
+    products = Product.query.all()
+    return render_template('index.html', products=products)
+
+
 @main.route('/thanks')
 def thanks():
     return render_template('thanks.html')
+
+
+@main.route('/contact')
+def contact():
+    form = ContactForm()
+    return render_template('contact.html', form=form)
+
+# @main.route("/how_much", methods=['POST'])
+# def how_much():
+#    qty = int(request.form.get('quantity'))
+#    print(qty)
+#    product_id = int(request.form['product_id'])
+#    print(product_id)
+#    print(session)
+#    cart_list = session['cart']
+#    session['cart'] = cart_list
+#    print(session)
+#    return redirect(url_for('main.cart'))

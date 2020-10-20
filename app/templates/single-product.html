@@ -100,18 +100,20 @@
                                     <p class="availability in-stock2", style="font-size:120%">
                                         Осталось: {{quantity}}
                                     </p>
-                                    <!--<div class="short-description">-->
+                                    <form class="all-payment" id ="size" method="post">
                                         <p>Выберите цвет: 
                                             {% for size in sizes %}
-                                                   <input type="checkbox" name = "type" value='{{size.id}}'>{{size.size}}
+                                                   <input type="radio" name = "type" value='{{size.id}}'>{{size.size}}
                                             {% endfor %}
                                         </p>
+                                    </form>
+                                    <form class="all-payment" id ="color" method="post">
                                         <p>Выберите размер:
                                             {% for color in colors %}
-                                                    <input type="checkbox" name = "type" value='{{color.id}}'>{{color.name}}
+                                                    <input type="radio" name = "type" value='{{color.id}}'>{{color.name}}
                                             {% endfor %}
                                         </p>
-                                    <!--</div>-->
+                                    </form>
                                     <div class="pre-box">
                                         <span class="special-price">{{product.price}}₽</span>
                                     </div>

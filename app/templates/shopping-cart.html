@@ -53,6 +53,9 @@
                                         </td>
                                         <td class="sop-cart an-sh">
                                             <form action="/how_much" method="post">
+                                                <div class="tb-product-price font-noraure-3">
+                                                    <span class="amount">Цвет - {{products.get(item)[4]}}, размер - {{products.get(item)[5]}}</span>
+                                                </div>
                                                 <div class="quantity ray">
                                                     <input class="input-text qty text" name = "quantity" type="number" size="4" title="Qty" value="{{products.get(item)[2]}}" min="0" step="1">
                                                 </div>
@@ -72,6 +75,8 @@
                                             <form action="/remove_from_cart" method="post">
                                                 <input type="hidden" name="remove_from_cart">
                                                 <input type="hidden" name="product_id" value="{{ item }}">
+                                                <input type="hidden" name="color_id" value="{{ products[item][4] }}">
+                                                <input type="hidden" name="size_id" value="{{ products[item][5] }}">
                                                 <button name ="remove"><span>x</span></button>
                                             </form>
                                         </td>
