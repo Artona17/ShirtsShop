@@ -1,7 +1,7 @@
 from flask import render_template, session, redirect, url_for, request
 from . import main
-from ..models import Product, Fandom, Type, Item, Size, Color
-from .forms import ContactForm, HowManyProducts, SortingForm, ShippingForm, ReviewForm, DeliveryandPaymentForm, SelectSizeandColorForm
+from ..models import Product, Fandom, Type, Item, Size
+from .forms import ContactForm, HowManyProducts, SortingForm, ShippingForm, ReviewForm, DeliveryandPaymentForm, SelectSizeForm
 
 
 @main.route('/product')
@@ -10,7 +10,6 @@ def product(product_id):
     review_form = ReviewForm()
     product_info = Product.query.filter(Product.id == product_id).first_or_404()
     product_info.price = int(product_info.price)
-
     items = Item.query.filter(Item.product_info_id == product_id).all()
     quantity = 0
 
@@ -20,15 +19,12 @@ def product(product_id):
 
     session['url'] = request.path
     size_ids = []
-    color_ids = []
 
     for item in items:
         size_ids.append(item.size_id)
-        color_ids.append(item.color_id)
         quantity += item.quantity
 
     sizes = Size.query.filter(Size.id.in_(set(size_ids))).all()
-    colors = Color.query.filter(Color.id.in_(set(color_ids))).all()
 
     if not review_form.validate():
         print(review_form.errors)
@@ -37,7 +33,7 @@ def product(product_id):
         # db.session.add(review)
         # print(db.session)
     return render_template('single-product.html', form=review_form,
-                           product=product_info, sizes=sizes, colors=colors, quantity=quantity)
+                           product=product_info, sizes=sizes, quantity=quantity)
 
 
 @main.route('/shop', methods=['GET', 'POST'])
@@ -93,9 +89,9 @@ def shop(page=1, items_per_page=3):
 
 @main.route('/cart')
 def cart():
-    form = SelectSizeandColorForm()
+    form = SelectSizeForm()
     if 'cart' not in session:
-        session['cart'] = []
+        session['cart'] = {}
         return render_template('shopping-cart.html', cart=session['cart'])
     else:
         subtotal = 0
@@ -107,7 +103,7 @@ def cart():
             print(item)
             product = Product.query.filter(Product.id == int(id[0])).first()
             qty = session['cart'][item][0]
-            product_names_prices.update({product.id: [product.product_name, int(product.price), qty, int(product.price * qty), int(session['cart'][item][1]), int(session['cart'][item][2])]})
+            product_names_prices.update({product.id: [product.product_name, int(product.price), qty, int(product.price * qty), int(session['cart'][item][1])]})
             subtotal += int(product.price) * qty
         print(session)
         return render_template('shopping-cart.html', products=product_names_prices, cart=session['cart'],
@@ -125,7 +121,7 @@ def checkout():
         id = list(item)
         product = Product.query.filter(Product.id == int(id[0])).first()
         qty = session['cart'][item][0]
-        product_names_prices.update({product.id: [product.product_name, int(product.price), qty, int(product.price * qty), int(session['cart'][item][1]), int(session['cart'][item][2])]})
+        product_names_prices.update({product.id: [product.product_name, int(product.price), qty, int(product.price * qty), int(session['cart'][item][1])]})
         subtotal += int(product.price) * qty
 
     if Deliveryform.validate_on_submit():
@@ -148,7 +144,7 @@ def name_address():
         id = list(item)
         product = Product.query.filter(Product.id == int(id[0])).first()
         qty = session['cart'][item][0]
-        product_names_prices.update({product.id: [product.product_name, int(product.price), qty, int(product.price * qty), int(session['cart'][item][1]), int(session['cart'][item][2])]})
+        product_names_prices.update({product.id: [product.product_name, int(product.price), qty, int(product.price * qty), int(session['cart'][item][1])]})
         subtotal += int(product.price) * qty
 
     if formShip.validate_on_submit():
@@ -162,13 +158,12 @@ def name_address():
 @main.route("/add_to_cart", methods=['POST'])
 def add_to_cart():
     product_id = int(request.form['product_id'])
-    color_id = 1  # int(request.form['color'])
     size_id = 1  # int(request.form['size'])
 
-    if request.form['quantity'] == '#qtybutton.value':
-        qty = 1
-    else:
-        qty = int(request.form['quantity'])
+    #if request.form['quantity'] == '#qtybutton.value':
+    qty = 1
+    #else:
+    #    qty = int(request.form['quantity'])
     print(session)
     if 'cart' not in session:
         session['cart'] = {}
@@ -177,13 +172,12 @@ def add_to_cart():
         print(item)
         id = int(item)
         qty_was = session['cart'][item][0]
-        color = int(session['cart'][item][1])
-        size = int(session['cart'][item][2])
-        if id == product_id and color == color_id and size == size_id:
-            session['cart'].update({str(id): [qty_was + qty, color, size]})
+        size = session['cart'][item][1]
+        if id == product_id and size == size_id:
+            session['cart'].update({str(id): [qty_was + qty, size]})
             break
     else:
-        cart_list.update({product_id: [qty, color_id, size_id]})
+        cart_list.update({str(product_id): [qty, size_id]})
     session['cart'] = cart_list
     # flash('Товар {0} успешно добавлен в корзину!', product.name)
     return redirect(session['url'])
@@ -192,14 +186,12 @@ def add_to_cart():
 @main.route("/remove_from_cart", methods=['POST'])
 def remove_from_cart():
     product_id = int(request.form['product_id'])
-    color_id = int(request.form['color_id'])
     size_id = int(request.form['size_id'])
     cart_list = session['cart'].copy()
     for item in session['cart']:
         id = int(item)
-        color = int(session['cart'][item][1])
-        size = int(session['cart'][item][2])
-        if id == product_id and color == color_id and size == size_id:
+        size = session['cart'][item][1]
+        if id == product_id and size == size_id:
             del cart_list[item]
     session['cart'] = cart_list
     print(session)

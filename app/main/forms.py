@@ -42,6 +42,5 @@ class DeliveryandPaymentForm(FlaskForm):
     submit = SubmitField('Продолжить')
 
 
-class SelectSizeandColorForm(FlaskForm):
+class SelectSizeForm(FlaskForm):
     sizechoice = SelectField('Размер:', choices=['S', 'M', 'L', 'XL'])
-    colorchoice = SelectField('Цвет:', choices=['Зелёный', 'Белый', 'Синий', 'Красный', 'Чёрный'])

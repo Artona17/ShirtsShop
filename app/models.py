@@ -7,7 +7,6 @@ class Item(db.Model):
     product_info_id = db.Column(db.Integer, db.ForeignKey('products_info.id'))
     quantity = db.Column(db.Integer, nullable=False)
     size_id = db.Column(db.Integer, db.ForeignKey('sizes.id'))
-    color_id = db.Column(db.Integer, db.ForeignKey('colors.id'))
 
 
 class Product(db.Model):
@@ -34,12 +33,6 @@ class Fandom(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32), unique=True)
     products = db.relationship('Product', backref='fandom')
-
-
-class Color(db.Model):
-    __tablename__ = 'colors'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=True, nullable=False)
 
 
 class Size(db.Model):
@@ -72,6 +65,5 @@ class Order(db.Model):
 class ProductInfo:
     quantity = 0
     size = 0
-    color = 0
 
 

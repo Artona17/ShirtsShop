@@ -49,17 +49,16 @@
                                     <tr>
                                         <td class="sop-cart an-shop-cart">
                                             <a style="margin: -30" class="col-md-12 col-sm-12 col-xs-12" href="{{url_for('main.product', id = item)}}"><img class="primary-image" alt="" src="{{url_for('static', filename='img/products/10.jpg')}}"></a>
-                                            <!--ссылка на генеренную страницу--><a class="col-md-12 col-sm-12 col-xs-12" href="{{url_for('main.product', id = item)}}">{{products.get(item)[0]}}</a>
+                                            <a class="col-md-12 col-sm-12 col-xs-12" href="{{url_for('main.product', id = item)}}">{{products.get(item)[0]}}</a>
                                         </td>
                                         <td class="sop-cart an-sh">
                                             <form action="/how_much" method="post">
                                                 <div class="tb-product-price font-noraure-3">
-                                                    <span class="amount">Цвет - {{products.get(item)[4]}}, размер - {{products.get(item)[5]}}</span>
+                                                    <span class="amount">Размер - {{products.get(item)[4]}}</span>                                                   
                                                 </div>
                                                 <div class="quantity ray">
                                                     <input class="input-text qty text" name = "quantity" type="number" size="4" title="Qty" value="{{products.get(item)[2]}}" min="0" step="1">
-                                                </div>
-                                                <input type="hidden" name="product_id" value="{{ item }}">
+                                                </div> 
                                             </form>
                                         </td>
                                         <td class="sop-cart">
@@ -75,8 +74,7 @@
                                             <form action="/remove_from_cart" method="post">
                                                 <input type="hidden" name="remove_from_cart">
                                                 <input type="hidden" name="product_id" value="{{ item }}">
-                                                <input type="hidden" name="color_id" value="{{ products[item][4] }}">
-                                                <input type="hidden" name="size_id" value="{{ products[item][5] }}">
+                                                <input type="hidden" name="size_id" value="{{ products.get(item)[4] }}">
                                                 <button name ="remove"><span>x</span></button>
                                             </form>
                                         </td>
