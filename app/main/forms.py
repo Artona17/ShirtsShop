@@ -20,8 +20,8 @@ class SortingForm(FlaskForm):
 
 
 class ShippingForm(FlaskForm):
-    FirstName = StringField('Фамилия', validators=[Length(1, 64), DataRequired()])
-    LastName = StringField('Имя', validators=[Length(1, 64), DataRequired()])
+    FirstName = StringField('Имя', validators=[Length(1, 64), DataRequired()])
+    LastName = StringField('Фамилия', validators=[Length(1, 64), DataRequired()])
     Email = StringField('E-Mail', validators=[Length(8, 64), Email(), DataRequired()])
     phone = StringField('Телефон', validators=[DataRequired()])
     town = StringField('Полный адрес')

@@ -103,7 +103,7 @@
                                     <form class="all-payment" id ="size" method="post">
                                         <p>Выберите размер: 
                                             {% for size in sizes %}
-                                                   <input type="radio" name = "size" value='{{size.id}}'>{{size.size}}
+                                                   <input type="radio" name = "size_id" value='{{size.id}}'>{{size.size}}
                                             {% endfor %}
                                         </p>
                                     </form>
@@ -126,7 +126,7 @@
                                                     <div class="product-icon">
                                                             <input type="hidden" name="add_to_cart">
                                                             <input type="hidden" name="product_id" value="{{ product.id }}">
-                                                            <input type="hidden" name = "size_id" value="#size.value">
+                                                            <input type="hidden" name = "size_id" value='#size_id.value'>
                                                             <button style="background-color: white;border: 1px solid #d3d3d3;width: 12%;height: 35px;"
                                                                 name = "atcart" class="fa fa-shopping-cart"></button>
                                                     </div>

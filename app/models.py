@@ -58,8 +58,10 @@ class Order(db.Model):
     name = db.Column(db.String(32), nullable=False)
     mail = db.Column(db.String(32), nullable=False)
     phone = db.Column(db.String(12), nullable=False)
-    address = db.Column(db.String(255), nullable=False)
-    postcode = db.Column(db.String(10), nullable=False)
+    address = db.Column(db.String(255), nullable=True)
+    postcode = db.Column(db.String(10), nullable=True)
+    products = db.Column(db.String(1000), nullable=False)
+    sum = db.Column(db.Integer, nullable=False)
 
 
 class ProductInfo:

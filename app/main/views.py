@@ -1,7 +1,8 @@
 from flask import render_template, session, redirect, url_for, request
 from . import main
-from ..models import Product, Fandom, Type, Item, Size
+from ..models import Product, Fandom, Type, Item, Size, Order
 from .forms import ContactForm, HowManyProducts, SortingForm, ShippingForm, ReviewForm, DeliveryandPaymentForm, SelectSizeForm
+from app import db
 
 
 @main.route('/product')
@@ -147,18 +148,37 @@ def name_address():
         product_names_prices.update({product.id: [product.product_name, int(product.price), qty, int(product.price * qty), int(session['cart'][item][1])]})
         subtotal += int(product.price) * qty
 
+    total = subtotal + DELIVERYPRICE[session['deliverychoice']]
+
     if formShip.validate_on_submit():
+        if session['deliverychoice'] == 'Самовывоз':
+            order = Order(surname=formShip.LastName.data, name=formShip.FirstName.data, mail=formShip.Email.data, phone=formShip.phone.data, products=str(product_names_prices), sum=total)
+            db.session.add(order)
+            db.session.commit()
+        elif session['deliverychoice'] == 'Почтой':
+            order = Order(surname=formShip.LastName.data, name=formShip.FirstName.data, mail=formShip.Email.data,
+                          phone=formShip.phone.data, address=formShip.town.data, postcode=str(product_names_prices), products=product_names_prices, sum=total)
+            db.session.add(order)
+            db.session.commit()
+        else:
+            order = Order(surname=formShip.LastName.data, name=formShip.FirstName.data, mail=formShip.Email.data,
+                          phone=formShip.phone.data, address=formShip.town.data, products=str(product_names_prices), sum=total)
+            db.session.add(order)
+            db.session.commit()
         return redirect(url_for('main.thanks'))
 
     return render_template('name_address.html', form=formShip, cart=session['cart'], delivery=session['deliverychoice'],
                            payment=session['paymentchoice'], products=product_names_prices, subtotal=subtotal,
-                           prices=DELIVERYPRICE)
+                           prices=DELIVERYPRICE, total=total)
 
 
 @main.route("/add_to_cart", methods=['POST'])
 def add_to_cart():
     product_id = int(request.form['product_id'])
-    size_id = 1  # int(request.form['size'])
+    #if int(request.form['size_id']):
+    #    size_id = int(request.form['size_id'])
+    #else:
+    size_id = 1
 
     #if request.form['quantity'] == '#qtybutton.value':
     qty = 1
