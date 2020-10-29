@@ -1,4 +1,5 @@
 from app import db
+# -*- coding: utf-8 -*-
 
 
 class Item(db.Model):

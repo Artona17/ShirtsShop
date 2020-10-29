@@ -1,4 +1,5 @@
 import os
+# -*- coding: utf-8 -*-
 
 from flask import Flask
 from flask_script import Manager

@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+# -*- coding: utf-8 -*-
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from config import config
@@ -19,6 +20,4 @@ def create_app(config_name):
 
     from app.main import main as main_blueprint
     app.register_blueprint(main_blueprint)
-    # здесь выполняется подключение маршрутов и
-    # нестандартных страниц с сообщениями об ошибках
     return app

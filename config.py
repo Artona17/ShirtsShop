@@ -1,5 +1,7 @@
 import os
+# -*- coding: utf-8 -*-
 basedir = os.path.abspath(os.path.dirname(__file__))
+
 
 
 class Config:

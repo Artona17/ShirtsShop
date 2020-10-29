@@ -1,4 +1,5 @@
 from flask import render_template, session, redirect, url_for, request
+# -*- coding: utf-8 -*-
 from . import main
 from ..models import Product, Fandom, Type, Item, Size, Order
 from .forms import ContactForm, HowManyProducts, SortingForm, ShippingForm, ReviewForm, DeliveryandPaymentForm, SelectSizeForm
@@ -78,9 +79,12 @@ def shop(page=1, items_per_page=3):
             page = 0
 
         print(products_ids)
-        products = Product.query.filter(Product.id.in_(products_ids)).paginate(page, items_per_page,
-                                                                               False)  # ИЗМЕНИТЬ здесь
+        products = Product.query.filter(Product.id.in_(products_ids)).paginate(page, items_per_page, False)  # ИЗМЕНИТЬ здесь
+        session['products_shop'] = products_ids
         print(products)
+        print(session['products_shop'])
+    elif session['products_shop']:
+        products = Product.query.filter(Product.id.in_(session['products_shop'])).paginate(page, items_per_page, False)
     else:
         products = Product.query.paginate(page, items_per_page, False)
 
@@ -99,14 +103,13 @@ def cart():
         product_names_prices = {}
 
         for item in session['cart']:
-            print(session)
             id = list(item)
-            print(item)
             product = Product.query.filter(Product.id == int(id[0])).first()
             qty = session['cart'][item][0]
-            product_names_prices.update({product.id: [product.product_name, int(product.price), qty, int(product.price * qty), int(session['cart'][item][1])]})
+            product_names_prices.update({product.id: [product.product_name, int(product.price), qty,
+                                                      int(product.price * qty), int(session['cart'][item][1])]})
             subtotal += int(product.price) * qty
-        print(session)
+
         return render_template('shopping-cart.html', products=product_names_prices, cart=session['cart'],
                                subtotal=subtotal)
 
@@ -165,7 +168,8 @@ def name_address():
                           phone=formShip.phone.data, address=formShip.town.data, products=str(product_names_prices), sum=total)
             db.session.add(order)
             db.session.commit()
-        return redirect(url_for('main.thanks'))
+        order = Order.query.filter(Order.surname == order.surname, Order.phone == order.phone, Order.products == order.products).first()
+        return redirect(url_for('main.thanks', order_id=order.id))
 
     return render_template('name_address.html', form=formShip, cart=session['cart'], delivery=session['deliverychoice'],
                            payment=session['paymentchoice'], products=product_names_prices, subtotal=subtotal,
@@ -224,9 +228,10 @@ def index():
     return render_template('index.html', products=products)
 
 
-@main.route('/thanks')
-def thanks():
-    return render_template('thanks.html')
+@main.route('/thanks/<int:order_id>')
+def thanks(order_id):
+    del session['cart']
+    return render_template('thanks.html', order_id=order_id)
 
 
 @main.route('/contact')

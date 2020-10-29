@@ -47,19 +47,6 @@
                                         {% endfor %}                                 
                                     </ul>
                                 </div>
-                                 <!--<div class="shop-one re-shop-one">
-                                <h3 class="wg-title2">Выберите цвет</h3>
-                                <ul class="product-categories">
-                                    <li class="cat-item cat-item-11">
-                                        <a href="#">Black</a>
-                                        <span class="count">(1)</span>
-                                    </li>
-                                    <li class="cat-item cat-item-8">
-                                        <a href="#">Orange</a>
-                                        <span class="count">(1)</span>
-                                    </li>
-                                </ul>
-                            </div>-->
                                 <div class="shop-one re-shop-one">
                                     <h3 class="wg-title2">Выбрать по цене</h3>
                                     <div class="widget shop-filter">
@@ -70,6 +57,7 @@
                                                     <input type="text" name="first_price" class="first_price" />
                                                     <input type="text" name="last_price" class="last_price"/>
                                                     <button class="button-shop" type="submit"><i class="fa fa-search search-icon"></i></button>
+                                                    <button name ="remove"><a href="{{url_for('main.shop')}}"><span>x</span></button>
                                                 </div>
                                             </div>
                                         </div>							
