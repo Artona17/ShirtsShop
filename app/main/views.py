@@ -44,6 +44,7 @@ def shop(page=1, items_per_page=3):
     howManyProducts_form = HowManyProducts()
     sorting_form = SortingForm()
 
+    session['products_shop'] = []
     types = Type.query.all()
     fandoms = Fandom.query.all()
     session['url'] = request.path
@@ -101,17 +102,21 @@ def cart():
     else:
         subtotal = 0
         product_names_prices = {}
-
+        all_sizes = {}
         for item in session['cart']:
             id = list(item)
+            sizes = [Size.query.filter(Size.id == i.size_id).first().size for i in Item.query.filter(Item.product_info_id == int(id[0])).all()]
+            print(tuple(sizes))
             product = Product.query.filter(Product.id == int(id[0])).first()
             qty = session['cart'][item][0]
             product_names_prices.update({product.id: [product.product_name, int(product.price), qty,
-                                                      int(product.price * qty), int(session['cart'][item][1])]})
+                                                      int(product.price * qty), Size.query.filter(Size.id == int(session['cart'][item][1])).first().size]})
             subtotal += int(product.price) * qty
+            all_sizes.update({int(id[0]): sizes})
+        print(all_sizes)
 
         return render_template('shopping-cart.html', products=product_names_prices, cart=session['cart'],
-                               subtotal=subtotal)
+                               subtotal=subtotal, sizes=all_sizes)
 
 
 @main.route('/checkout', methods=['GET', 'POST'])
@@ -179,10 +184,10 @@ def name_address():
 @main.route("/add_to_cart", methods=['POST'])
 def add_to_cart():
     product_id = int(request.form['product_id'])
-    #if int(request.form['size_id']):
-    #    size_id = int(request.form['size_id'])
-    #else:
-    size_id = 1
+    if int(request.form['size']):
+        size_id = int(request.form['size'])
+    else:
+        size_id = 1
 
     #if request.form['quantity'] == '#qtybutton.value':
     qty = 1
@@ -210,7 +215,7 @@ def add_to_cart():
 @main.route("/remove_from_cart", methods=['POST'])
 def remove_from_cart():
     product_id = int(request.form['product_id'])
-    size_id = int(request.form['size_id'])
+    size_id = request.form['size_id']
     cart_list = session['cart'].copy()
     for item in session['cart']:
         id = int(item)

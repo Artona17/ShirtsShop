@@ -116,15 +116,15 @@
                                                             <div class="actions-btn">
                                                                 <a href="#" data-placement="top" data-target="#quick-view" data-trigger="hover" data-toggle="modal" data-original-title="Quick View"><i class="fa fa-eye"></i></a>
                                                                 <a data-placement="top" data-toggle="tooltip" href="#" data-original-title="Add To Wishlist"><i class="fa fa-heart"></i></a>
-                                                                <a data-placement="top" data-toggle="tooltip" href="#" data-original-title="Add To Cart">
-                                                                    <form action="/add_to_cart" method="post">
+                                                                <a data-placement="top" data-toggle="tooltip" href="{{url_for('main.product', product_id = item.id)}}" data-original-title="Add To Cart">
+                                                                    <button style="border: 0; background-color: inherit" data-toggle="tooltip" data-placement="top">
+                                                                            <i class="fa fa-shopping-cart"></i>
+                                                                        </button>
+                                                                    <!--<form action="/add_to_cart" method="post">
                                                                         <input type="hidden" name="add_to_cart">
                                                                         <input type="hidden" name="product_id" value="{{ item.id }}">
                                                                         <input type="hidden" name="quantity" value="1">
-                                                                        <button style="border: 0; background-color: inherit" data-toggle="tooltip" data-placement="top">
-                                                                            <i class="fa fa-shopping-cart"></i>
-                                                                        </button>
-                                                                    </form>
+                                                                    </form>-->
                                                                 </a>
                                                             </div>
                                                         </div>

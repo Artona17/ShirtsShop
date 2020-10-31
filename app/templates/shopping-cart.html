@@ -40,7 +40,7 @@
                                 <table id="shopping-cart-table" class="data-table cart-table">
                                     <tr>
                                         <th class="low1">Товар</th>
-                                        <th class="low7">Размер, цвет и количество</th>
+                                        <th class="low7">Размер и количество</th>
                                         <th class="low7">Цена за 1 шт.</th>
                                         <th class="low7">Общая стоимость</th>
                                         <th class="low7">Отмена</th>
@@ -55,13 +55,15 @@
                                             <form action="/how_much" method="post">
                                                 <input type="hidden" name="product_id" value="{{ item }}">
                                                 <div class="tb-product-price font-noraure-3">
-                                                    <span class="amount">Размер - {{products.get(item)[4]}}</span>
-                                                    <select>
-                                                        {% for i in ['S', 'M', 'L', 'XL'] %}
+                                                    <span class="amount">Размер - {{products.get(item)[4]}}</span><br/>
+                                                    Изменить размер:<br/>
+                                                    <select id="size_change">
+                                                        {% for i in sizes[item] %}
                                                         <option>{{i}}</option>
                                                         {% endfor %}
                                                     </select>                                                 
                                                 </div>
+                                                Количество:
                                                 <div class="quantity ray">
                                                     <input class="input-text qty text" name = "quantity" type="number" size="4" title="Qty" value="{{products.get(item)[2]}}" min="0" step="1">
                                                 </div> 
